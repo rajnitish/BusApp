@@ -3,10 +3,11 @@ package com.example.busapp;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -27,9 +28,12 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,6 +49,10 @@ import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,10 +78,12 @@ public class MapsActivity extends AppCompatActivity implements
     private Boolean mLocationPermissionGranted = false;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private GoogleMap mMap;
+    private Location currentLocation;
 
     // Markers
     Marker startingLocationMarker = null;
     Marker finalLocationMarker = null;
+    ArrayList<Marker> busMarkers = null;
     private ArrayList<Polyline> currentPolylines;
 
     // widgets
@@ -102,6 +112,7 @@ public class MapsActivity extends AppCompatActivity implements
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()) {
                     case R.id.bus_route :
+                        startActivity(new Intent(MapsActivity.this, BusRouteActivity.class));
                         break;
                     case R.id.complaint_section :
                         startActivity(new Intent(MapsActivity.this, ComplaintActivity.class));
@@ -111,6 +122,7 @@ public class MapsActivity extends AppCompatActivity implements
             }
         });
 
+        // Get permissions and initialize map
         getLocationPermission();
 
         // Initialize Places
@@ -258,9 +270,6 @@ public class MapsActivity extends AppCompatActivity implements
         mMap = googleMap;
         if (mLocationPermissionGranted) {
             getDeviceLocation();
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
@@ -271,6 +280,16 @@ public class MapsActivity extends AppCompatActivity implements
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 30, 30);
+
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    Intent intent = new Intent(MapsActivity.this, BusDetailsActivity.class);
+                    intent.putExtra("bus_id", marker.getTitle());
+                    startActivity(intent);
+                }
+            });
+
         }
     }
 
@@ -283,10 +302,11 @@ public class MapsActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
-                            Location currentLocation = (Location) task.getResult();
+                            currentLocation = (Location) task.getResult();
                             if(startingLocationMarker == null) {
                                 startingLocationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
                             }
+
                             // Get location name
                             String currentLocationName = "";
                             Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -299,6 +319,36 @@ public class MapsActivity extends AppCompatActivity implements
                             }
                             mStartingLocationTextbox.setText(currentLocationName);
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+
+                            // Setup markers
+                            String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
+                            new FetchSQLQuery(MapsActivity.this, new FetchSQLQuery.AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    // Parse JSON string and show markers (do this is an async task preferably)
+                                    try {
+                                        JSONArray jsonArray = (new JSONObject(output)).getJSONArray("busdetail");
+                                        if(busMarkers == null) {
+                                            busMarkers = new ArrayList<>();
+                                        }
+
+                                        // Get bus marker
+                                        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.bus);
+                                        Bitmap b = bitmapdraw.getBitmap();
+                                        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+                                        for(int i = 0; i < jsonArray.length(); i++) {
+                                            double lat = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lat"));
+                                            double lng = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lng"));
+                                            Marker tempMarker = mMap.addMarker(new MarkerOptions()
+                                                                    .position(new LatLng(lat, lng))
+                                                                    .title((String) (((JSONObject) jsonArray.get(i)).get("ID")))
+                                                                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+                                            busMarkers.add(tempMarker);
+                                        }
+                                    } catch (JSONException e) {
+                                    }
+                                }
+                            }).execute(query_url);
                         } else {
                             Toast.makeText(MapsActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                         }
@@ -316,11 +366,7 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     private void showRoute() {
-        startMyTask(new FetchURL(MapsActivity.this));
-    }
-
-    private void startMyTask(AsyncTask<String, Void, String> asyncTask) {
-        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getUrl(startingLocationMarker.getPosition(), finalLocationMarker.getPosition(), "transit"));
+        new FetchURL(MapsActivity.this).execute(getUrl(startingLocationMarker.getPosition(), finalLocationMarker.getPosition(), "transit"));
     }
 
     private void hideSoftKeyboard() {
@@ -358,4 +404,5 @@ public class MapsActivity extends AppCompatActivity implements
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.animateCamera(cu);
     }
+
 }
