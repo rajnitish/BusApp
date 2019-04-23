@@ -26,6 +26,9 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -110,11 +113,11 @@ public class MapsActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()) {
-                    case R.id.bus_route :
+                switch (menuItem.getItemId()) {
+                    case R.id.bus_route:
                         startActivity(new Intent(MapsActivity.this, BusRouteActivity.class));
                         break;
-                    case R.id.complaint_section :
+                    case R.id.complaint_section:
                         startActivity(new Intent(MapsActivity.this, ComplaintActivity.class));
                         break;
                 }
@@ -161,7 +164,7 @@ public class MapsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(actionBarDrawerToggle.onOptionsItemSelected(item))
+        if (actionBarDrawerToggle.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
     }
@@ -172,7 +175,7 @@ public class MapsActivity extends AppCompatActivity implements
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE_STARTING_LOCATION) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
-                if(startingLocationMarker == null) {
+                if (startingLocationMarker == null) {
                     startingLocationMarker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()));
                 } else {
                     startingLocationMarker.setPosition(place.getLatLng());
@@ -180,17 +183,17 @@ public class MapsActivity extends AppCompatActivity implements
                 mStartingLocationTextbox.setText(place.getName());
 
                 // Calculate route
-                if(startingLocationMarker != null && finalLocationMarker != null) {
+                if (startingLocationMarker != null && finalLocationMarker != null) {
                     showRoute();
                 }
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
             } else if (resultCode == RESULT_CANCELED) {
             }
-        } else if(requestCode == AUTOCOMPLETE_REQUEST_CODE_FINAL_LOCATION) {
+        } else if (requestCode == AUTOCOMPLETE_REQUEST_CODE_FINAL_LOCATION) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
-                if(finalLocationMarker == null) {
+                if (finalLocationMarker == null) {
                     finalLocationMarker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()));
                 } else {
                     finalLocationMarker.setPosition(place.getLatLng());
@@ -198,7 +201,7 @@ public class MapsActivity extends AppCompatActivity implements
                 mFinalLocationTextbox.setText(place.getName());
 
                 // Calculate route
-                if(startingLocationMarker != null && finalLocationMarker != null) {
+                if (startingLocationMarker != null && finalLocationMarker != null) {
                     showRoute();
                 }
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
@@ -270,6 +273,9 @@ public class MapsActivity extends AppCompatActivity implements
         mMap = googleMap;
         if (mLocationPermissionGranted) {
             getDeviceLocation();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
@@ -296,14 +302,14 @@ public class MapsActivity extends AppCompatActivity implements
     private void getDeviceLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
-            if(mLocationPermissionGranted) {
+            if (mLocationPermissionGranted) {
                 final Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             currentLocation = (Location) task.getResult();
-                            if(startingLocationMarker == null) {
+                            if (startingLocationMarker == null) {
                                 startingLocationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
                             }
 
@@ -312,10 +318,10 @@ public class MapsActivity extends AppCompatActivity implements
                             Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                             try {
                                 List<Address> listAddresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
-                                if(listAddresses != null && listAddresses.size() > 0) {
+                                if (listAddresses != null && listAddresses.size() > 0) {
                                     currentLocationName = listAddresses.get(0).getAddressLine(0);
                                 }
-                            } catch(IOException e) {
+                            } catch (IOException e) {
                             }
                             mStartingLocationTextbox.setText(currentLocationName);
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
@@ -328,7 +334,7 @@ public class MapsActivity extends AppCompatActivity implements
                                     // Parse JSON string and show markers (do this is an async task preferably)
                                     try {
                                         JSONArray jsonArray = (new JSONObject(output)).getJSONArray("busdetail");
-                                        if(busMarkers == null) {
+                                        if (busMarkers == null) {
                                             busMarkers = new ArrayList<>();
                                         }
 
@@ -336,13 +342,13 @@ public class MapsActivity extends AppCompatActivity implements
                                         BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.bus);
                                         Bitmap b = bitmapdraw.getBitmap();
                                         Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
-                                        for(int i = 0; i < jsonArray.length(); i++) {
+                                        for (int i = 0; i < jsonArray.length(); i++) {
                                             double lat = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lat"));
                                             double lng = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lng"));
                                             Marker tempMarker = mMap.addMarker(new MarkerOptions()
-                                                                    .position(new LatLng(lat, lng))
-                                                                    .title((String) (((JSONObject) jsonArray.get(i)).get("ID")))
-                                                                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+                                                    .position(new LatLng(lat, lng))
+                                                    .title((String) (((JSONObject) jsonArray.get(i)).get("ID")))
+                                                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
                                             busMarkers.add(tempMarker);
                                         }
                                     } catch (JSONException e) {
@@ -355,8 +361,72 @@ public class MapsActivity extends AppCompatActivity implements
                     }
                 });
             }
-        } catch(SecurityException e) {
+        } catch (SecurityException e) {
         }
+
+        // Set location updates
+        final LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_NO_POWER);
+        locationRequest.setInterval(5000);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mFusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                currentLocation = locationResult.getLastLocation();
+
+                // Get location name
+                String currentLocationName = "";
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                try {
+                    List<Address> listAddresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+                    if (listAddresses != null && listAddresses.size() > 0) {
+                        currentLocationName = listAddresses.get(0).getAddressLine(0);
+                    }
+                } catch (IOException e) {
+                }
+                mStartingLocationTextbox.setText(currentLocationName);
+
+                // Setup markers
+                String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
+                new FetchSQLQuery(MapsActivity.this, new FetchSQLQuery.AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        // Parse JSON string and show markers (do this is an async task preferably)
+                        try {
+                            JSONArray jsonArray = (new JSONObject(output)).getJSONArray("busdetail");
+                            if (busMarkers == null) {
+                                busMarkers = new ArrayList<>();
+                            } else {
+                                // Remove previous markers
+                                for(int i = 0; i < busMarkers.size(); i++) {
+                                    busMarkers.get(i).remove();
+                                }
+                                busMarkers.clear();
+                            }
+
+                            // Get bus marker
+                            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.bus);
+                            Bitmap b = bitmapdraw.getBitmap();
+                            Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                double lat = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lat"));
+                                double lng = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lng"));
+                                Marker tempMarker = mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(lat, lng))
+                                        .title((String) (((JSONObject) jsonArray.get(i)).get("ID")))
+                                        .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+                                busMarkers.add(tempMarker);
+                            }
+                        } catch (JSONException e) {
+                        }
+                    }
+                }).execute(query_url);
+
+            }
+        }, null);
     }
 
     private void moveCamera(LatLng latLng, float zoom) {
