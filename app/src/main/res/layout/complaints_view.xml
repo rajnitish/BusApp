@@ -46,7 +46,7 @@
         android:hint="SEND"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.401"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/complaint_messagebox"
@@ -57,36 +57,45 @@
         android:id="@+id/phoneText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="60dp"
         android:ems="10"
         android:inputType="phone"
         android:text="Phone Number"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/complaint_messagebox"
-        tools:layout_editor_absoluteX="69dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/emailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:text="email@xyz.com"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/phoneText"
-        tools:layout_editor_absoluteX="69dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/nameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/emailText"
-        tools:layout_editor_absoluteX="69dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
 
