@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/quantum_white_100">
+    android:background="@color/quantum_white_100"
+    android:padding="16dp"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/complaint_toolbar"
@@ -15,30 +17,60 @@
         app:title="Send Complaint"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-
-    <EditText
+    <TextView
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/complaint_messagebox"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="150dp"
-        android:inputType="text|textMultiLine"
-        android:layout_below="@id/complaint_toolbar"
-        android:gravity="top|left"
-        android:backgroundTint="@color/quantum_bluegrey300"
-        android:background="@drawable/rounded_edittext"
-        android:textSize="25sp"
-        android:hint="Enter your complaint"/>
-
+        android:layout_height="wrap_content"
+        android:text="Subject"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+    <EditText
+        android:id="@+id/edit_text_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailSubject"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+    <EditText
+        android:id="@+id/edit_text_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="10"
+        android:gravity="start|top"/>
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:textSize="30sp"
-        android:layout_below="@id/complaint_messagebox"
-        android:gravity="center"
-        android:hint="SEND"
-        android:layout_marginTop="20dp"
-        android:layout_centerInParent="true"/>
-</RelativeLayout>
+        android:id="@+id/button_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="send"/>
+
+
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:id="@+id/complaint_messagebox"-->
+        <!--android:layout_marginLeft="30dp"-->
+        <!--android:layout_marginRight="30dp"-->
+        <!--android:layout_marginTop="150dp"-->
+        <!--android:inputType="text|textMultiLine"-->
+        <!--android:layout_below="@id/complaint_toolbar"-->
+        <!--android:gravity="top|left"-->
+        <!--android:backgroundTint="@color/quantum_bluegrey300"-->
+        <!--android:background="@drawable/rounded_edittext"-->
+        <!--android:textSize="25sp"-->
+        <!--android:hint="Enter your complaint"/>-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:textSize="30sp"-->
+        <!--android:layout_below="@id/complaint_messagebox"-->
+        <!--android:gravity="center"-->
+        <!--android:hint="SEND"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_centerInParent="true"/>-->
+
+
+</LinearLayout>
 
