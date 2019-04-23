@@ -24,8 +24,8 @@
         android:id="@+id/complaint_messagebox"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="396dp"
+        android:layout_marginTop="232dp"
+        android:layout_marginBottom="8dp"
         android:autofillHints=""
         android:background="@drawable/rounded_edittext"
         android:backgroundTint="@color/quantum_bluegrey300"
@@ -33,6 +33,7 @@
         android:hint="Enter your complaint"
         android:inputType="text|textMultiLine"
         android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/complaint_toolbar" />
 
@@ -40,14 +41,12 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:hint="SEND"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.401"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/complaint_messagebox"
@@ -58,28 +57,36 @@
         android:id="@+id/phoneText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:ems="10"
         android:inputType="phone"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="332dp" />
+        android:text="Phone Number"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/complaint_messagebox"
+        tools:layout_editor_absoluteX="69dp" />
 
     <EditText
         android:id="@+id/emailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        tools:layout_editor_absoluteX="99dp"
-        tools:layout_editor_absoluteY="260dp" />
+        android:text="email@xyz.com"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/phoneText"
+        tools:layout_editor_absoluteX="69dp" />
 
     <EditText
         android:id="@+id/nameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
-        tools:layout_editor_absoluteX="98dp"
-        tools:layout_editor_absoluteY="183dp" />
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/emailText"
+        tools:layout_editor_absoluteX="69dp" />
 </android.support.constraint.ConstraintLayout>
 
