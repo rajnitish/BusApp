@@ -1,6 +1,7 @@
 package com.example.busapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 
@@ -17,7 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+class PointsParser extends AsyncTask<String, Integer, List<HashMap<String, String>>> {
     // Pattern data
     private static final int PATTERN_GAP_LENGTH_PX = 20;
     private static final PatternItem DOT = new Dot();
@@ -27,24 +28,26 @@ class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, 
     private static final List<PatternItem> PATTERN_POLYLINE_DOTTED = Arrays.asList(GAP, DOT);
 
     TaskLoadedCallback taskCallback;
+    int detailCase;
 
-    public PointsParser(Context mContext) {
+    public PointsParser(Context mContext, int detailCase) {
         this.taskCallback = (TaskLoadedCallback) mContext;
+        this.detailCase = detailCase;
     }
 
     // Parsing the data in non-ui thread
     @Override
-    protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+    protected List<HashMap<String, String>> doInBackground(String... jsonData) {
 
         JSONObject jObject;
-        List<List<HashMap<String, String>>> routes = null;
+        List<HashMap<String, String>> routes = null;
 
         try {
             jObject = new JSONObject(jsonData[0]);
             DataParser parser = new DataParser();
 
             // Starts parsing data
-            routes = parser.parse(jObject);
+            routes = parser.parse(jObject, detailCase);
         } catch (Exception e) {
         }
         return routes;
@@ -52,16 +55,19 @@ class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, 
 
     // Executes in UI thread, after the parsing process
     @Override
-    protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-        ArrayList<LatLng> points;
-        ArrayList<PolylineOptions> allPolylines = new ArrayList<PolylineOptions>();
-        PolylineOptions lineOptions = null;
-        // Traversing through all the routes
-        for (int i = 0; i < result.size(); i++) {
+    protected void onPostExecute(List<HashMap<String, String>> result) {
+        if(detailCase == BusApplication.ROUTE_MINOR_DETAILS) {
+            taskCallback.onTaskDone(result);
+        } else if(detailCase == BusApplication.ROUTE_PATH_DETAILS) {
+
+            // Create polyline options and pass it to ui thread
+            ArrayList<LatLng> points;
+            ArrayList<PolylineOptions> allPolylines = new ArrayList<>();
+            PolylineOptions lineOptions = null;
+
             points = new ArrayList<>();
             lineOptions = new PolylineOptions();
-            // Fetching i-th route
-            List<HashMap<String, String>> path = result.get(i);
+            List<HashMap<String, String>> path = result;
 
             String travelMode = path.get(0).get("travel_mode");
             for(int j = 0; j < path.size(); j++) {
@@ -109,14 +115,11 @@ class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, 
             }
             allPolylines.add(lineOptions);
 
-        }
-
-        // Drawing polyline in the Google Map for the i-th route
-        if (allPolylines != null) {
-            //mMap.addPolyline(lineOptions);
-            taskCallback.onTaskDone(allPolylines);
-
-        } else {
+            // Drawing polyline in the Google Map for the i-th route
+            if (allPolylines != null) {
+                taskCallback.onTaskDone(allPolylines);
+            } else {
+            }
         }
     }
 }

@@ -31,12 +31,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -67,15 +65,11 @@ import static com.google.android.gms.common.api.GoogleApiClient.*;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,
-        OnConnectionFailedListener,
-        TaskLoadedCallback {
+        OnConnectionFailedListener {
 
-    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int AUTOCOMPLETE_REQUEST_CODE_STARTING_LOCATION = 1;
     private static final int AUTOCOMPLETE_REQUEST_CODE_FINAL_LOCATION = 2;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final float DEFAULT_ZOOM = 15f;
+    private static final int MULTIPLE_ROUTE_ACTIVITY = 3;
 
     // vars
     private Boolean mLocationPermissionGranted = false;
@@ -87,7 +81,6 @@ public class MapsActivity extends AppCompatActivity implements
     Marker startingLocationMarker = null;
     Marker finalLocationMarker = null;
     ArrayList<Marker> busMarkers = null;
-    private ArrayList<Polyline> currentPolylines;
 
     // widgets
     DrawerLayout drawer;
@@ -102,14 +95,17 @@ public class MapsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        // Get widgets
         mStartingLocationTextbox = findViewById(R.id.starting_location_textbox);
         mFinalLocationTextbox = findViewById(R.id.final_location_textbox);
         drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        // Set action bar
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.open, R.string.close);
         drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -129,10 +125,9 @@ public class MapsActivity extends AppCompatActivity implements
         getLocationPermission();
 
         // Initialize Places
-        Places.initialize(getApplicationContext(), "AIzaSyBAoJACcqTF7AOngp7lc2FcxTKsj75acuo");
+        Places.initialize(getApplicationContext(), "AIzaSyC98_fRbzqKkOJAQZtcy-3ZC5nnRVHg58o");
 
-        // Set the fields to specify which types of place data to
-        // return after the user has made a selection.
+        // Set the fields to specify which types of place data to return
         final List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
 
         mStartingLocationTextbox.setOnClickListener(new View.OnClickListener() {
@@ -171,83 +166,88 @@ public class MapsActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(this, "Activity ended", Toast.LENGTH_SHORT);
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE_STARTING_LOCATION) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
+
+                // Set global variables
+                ((BusApplication) this.getApplication()).setStartingLocationName(place.getName());
+                ((BusApplication) this.getApplication()).setStartingLocation(place.getLatLng());
+
+                // Set starting location name
+                mStartingLocationTextbox.setText(place.getName());
+
+                // Add starting marker
                 if (startingLocationMarker == null) {
                     startingLocationMarker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()));
                 } else {
                     startingLocationMarker.setPosition(place.getLatLng());
                 }
-                mStartingLocationTextbox.setText(place.getName());
 
-                // Calculate route
-                if (startingLocationMarker != null && finalLocationMarker != null) {
-                    showRoute();
-                }
+                // Show route
+                showRoutes();
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // handle error
                 Status status = Autocomplete.getStatusFromIntent(data);
             } else if (resultCode == RESULT_CANCELED) {
             }
         } else if (requestCode == AUTOCOMPLETE_REQUEST_CODE_FINAL_LOCATION) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
+
+                // Set global variables
+                ((BusApplication) this.getApplication()).setFinalLocationName(place.getName());
+                ((BusApplication) this.getApplication()).setFinalLocation(place.getLatLng());
+
+                // Set final location name
+                mFinalLocationTextbox.setText(place.getName());
+
+                // Add final marker
                 if (finalLocationMarker == null) {
                     finalLocationMarker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()));
                 } else {
                     finalLocationMarker.setPosition(place.getLatLng());
                 }
-                mFinalLocationTextbox.setText(place.getName());
 
-                // Calculate route
-                if (startingLocationMarker != null && finalLocationMarker != null) {
-                    showRoute();
-                }
+                // Show route
+                showRoutes();
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // handle error
                 Status status = Autocomplete.getStatusFromIntent(data);
             } else if (resultCode == RESULT_CANCELED) {
             }
-        }
-    }
+        } else if (requestCode == MULTIPLE_ROUTE_ACTIVITY) {
+            // Set text in textboxes
+            mStartingLocationTextbox.setText(((BusApplication)this.getApplication()).getStartingLocationName());
+            mFinalLocationTextbox.setText(((BusApplication)this.getApplication()).getFinalLocationName());
 
-    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        // Mode
-        String mode = "mode=" + directionMode;
-        String transit_mode = "transit_mode=bus";
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode + "&" + transit_mode;
-        // Output format
-        String output = "json";
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
-        return url;
+            // Set markers
+            startingLocationMarker.setPosition(((BusApplication)this.getApplication()).getStartingLocation());
+            finalLocationMarker.setPosition(((BusApplication)this.getApplication()).getFinalLocation());
+        }
     }
 
     // Gets the required permissions
     private void getLocationPermission() {
-        String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(this, FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this, COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        String[] permissions = {BusApplication.FINE_LOCATION, BusApplication.COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(this, BusApplication.FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, BusApplication.COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionGranted = true;
                 initMap();
             } else {
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
+                ActivityCompat.requestPermissions(this, permissions, BusApplication.LOCATION_PERMISSION_REQUEST_CODE);
             }
         } else {
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, permissions, BusApplication.LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
+    // This is executed once the permissions are granted
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE: {
+            case BusApplication.LOCATION_PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < grantResults.length; i++) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
@@ -262,26 +262,26 @@ public class MapsActivity extends AppCompatActivity implements
         }
     }
 
+    // Initializes the map fragment
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapView = mapFragment.getView();
         mapFragment.getMapAsync(this);
     }
 
+    // This is executed once the map is initialized and is ready
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         if (mLocationPermissionGranted) {
-            getDeviceLocation();
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-            // Get the button view
+            getDeviceLocation();
+            setLocationUpdates();
+
+            // Place the location button
             View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-            // and next place it, on bottom right (as Google Maps app)
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -299,6 +299,82 @@ public class MapsActivity extends AppCompatActivity implements
         }
     }
 
+    // Set starting location marker as current location
+    void setStartingLocation() {
+        // Set marker
+        if (startingLocationMarker == null) {
+            startingLocationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
+        }
+
+        // Set location name in textbox
+        String currentLocationName = "";
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> listAddresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+            if (listAddresses != null && listAddresses.size() > 0) {
+                currentLocationName = listAddresses.get(0).getAddressLine(0);
+            }
+        } catch (IOException e) {
+        }
+        mStartingLocationTextbox.setText(currentLocationName);
+
+        // Set global variables
+        ((BusApplication)this.getApplication()).setStartingLocation(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+        ((BusApplication)this.getApplication()).setStartingLocationName(currentLocationName);
+    }
+
+    // Set nearby bus markers on map
+    void setBusMarkers() {
+        String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
+        new FetchSQLQuery(MapsActivity.this, new FetchSQLQuery.AsyncResponse() {
+            @Override
+            public void processFinish(String output) {
+                // Parse JSON string and show markers (do this is an async task preferably)
+                try {
+                    JSONArray jsonArray = (new JSONObject(output)).getJSONArray("busdetail");
+                    if (busMarkers == null) {
+                        busMarkers = new ArrayList<>();
+                    }
+
+                    // Get bus marker
+                    BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.bus);
+                    Bitmap b = bitmapdraw.getBitmap();
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        double lat = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lat"));
+                        double lng = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lng"));
+                        Marker tempMarker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(lat, lng))
+                                .title((String) (((JSONObject) jsonArray.get(i)).get("ID")))
+                                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+                        busMarkers.add(tempMarker);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        }).execute(query_url);
+    }
+
+    // Sets location updates to update current location periodically
+    void setLocationUpdates() {
+        // Set location updates
+        final LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_NO_POWER);
+        locationRequest.setInterval(BusApplication.LOCATION_UPDATE_INTERVAL);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mFusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                currentLocation = locationResult.getLastLocation();
+            }
+
+        }, null);
+    }
+
+    // This method marks the initial location and our current location
     private void getDeviceLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
@@ -309,53 +385,16 @@ public class MapsActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             currentLocation = (Location) task.getResult();
-                            if (startingLocationMarker == null) {
-                                startingLocationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
-                            }
 
-                            // Get location name
-                            String currentLocationName = "";
-                            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                            try {
-                                List<Address> listAddresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
-                                if (listAddresses != null && listAddresses.size() > 0) {
-                                    currentLocationName = listAddresses.get(0).getAddressLine(0);
-                                }
-                            } catch (IOException e) {
-                            }
-                            mStartingLocationTextbox.setText(currentLocationName);
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            // Set current location as starting location
+                            setStartingLocation();
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), BusApplication.DEFAULT_ZOOM);
 
-                            // Setup markers
-                            String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
-                            new FetchSQLQuery(MapsActivity.this, new FetchSQLQuery.AsyncResponse() {
-                                @Override
-                                public void processFinish(String output) {
-                                    // Parse JSON string and show markers (do this is an async task preferably)
-                                    try {
-                                        JSONArray jsonArray = (new JSONObject(output)).getJSONArray("busdetail");
-                                        if (busMarkers == null) {
-                                            busMarkers = new ArrayList<>();
-                                        }
+                            // Setup nearby bus markers
+                            setBusMarkers();
 
-                                        // Get bus marker
-                                        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.bus);
-                                        Bitmap b = bitmapdraw.getBitmap();
-                                        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
-                                        for (int i = 0; i < jsonArray.length(); i++) {
-                                            double lat = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lat"));
-                                            double lng = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lng"));
-                                            Marker tempMarker = mMap.addMarker(new MarkerOptions()
-                                                    .position(new LatLng(lat, lng))
-                                                    .title((String) (((JSONObject) jsonArray.get(i)).get("ID")))
-                                                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
-                                            busMarkers.add(tempMarker);
-                                        }
-                                    } catch (JSONException e) {
-                                    }
-                                }
-                            }).execute(query_url);
                         } else {
+                            // Task unsuccessful
                             Toast.makeText(MapsActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -363,70 +402,6 @@ public class MapsActivity extends AppCompatActivity implements
             }
         } catch (SecurityException e) {
         }
-
-        // Set location updates
-        final LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_NO_POWER);
-        locationRequest.setInterval(5000);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mFusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                currentLocation = locationResult.getLastLocation();
-
-                // Get location name
-                String currentLocationName = "";
-                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                try {
-                    List<Address> listAddresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
-                    if (listAddresses != null && listAddresses.size() > 0) {
-                        currentLocationName = listAddresses.get(0).getAddressLine(0);
-                    }
-                } catch (IOException e) {
-                }
-                mStartingLocationTextbox.setText(currentLocationName);
-
-                // Setup markers
-                String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
-                new FetchSQLQuery(MapsActivity.this, new FetchSQLQuery.AsyncResponse() {
-                    @Override
-                    public void processFinish(String output) {
-                        // Parse JSON string and show markers (do this is an async task preferably)
-                        try {
-                            JSONArray jsonArray = (new JSONObject(output)).getJSONArray("busdetail");
-                            if (busMarkers == null) {
-                                busMarkers = new ArrayList<>();
-                            } else {
-                                // Remove previous markers
-                                for(int i = 0; i < busMarkers.size(); i++) {
-                                    busMarkers.get(i).remove();
-                                }
-                                busMarkers.clear();
-                            }
-
-                            // Get bus marker
-                            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.bus);
-                            Bitmap b = bitmapdraw.getBitmap();
-                            Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                double lat = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lat"));
-                                double lng = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lng"));
-                                Marker tempMarker = mMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(lat, lng))
-                                        .title((String) (((JSONObject) jsonArray.get(i)).get("ID")))
-                                        .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
-                                busMarkers.add(tempMarker);
-                            }
-                        } catch (JSONException e) {
-                        }
-                    }
-                }).execute(query_url);
-
-            }
-        }, null);
     }
 
     private void moveCamera(LatLng latLng, float zoom) {
@@ -435,8 +410,10 @@ public class MapsActivity extends AppCompatActivity implements
         hideSoftKeyboard();
     }
 
-    private void showRoute() {
-        new FetchURL(MapsActivity.this).execute(getUrl(startingLocationMarker.getPosition(), finalLocationMarker.getPosition(), "transit"));
+    private void showRoutes() {
+        if(startingLocationMarker != null && finalLocationMarker != null) {
+            startActivityForResult(new Intent(this, MultipleRouteActivity.class), MULTIPLE_ROUTE_ACTIVITY);
+        }
     }
 
     private void hideSoftKeyboard() {
@@ -447,32 +424,32 @@ public class MapsActivity extends AppCompatActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
-    @Override
-    public void onTaskDone(Object... values) {
-        if(currentPolylines != null && currentPolylines.size() > 0) {
-            for(int i = 0; i < currentPolylines.size(); i++) {
-                currentPolylines.get(i).remove();
-            }
-        }
-
-        currentPolylines = new ArrayList<>();
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-        ArrayList<PolylineOptions> arr = (ArrayList<PolylineOptions>) values[0];
-        for(int i = 0; i < arr.size(); i++) {
-            Polyline p = mMap.addPolyline(arr.get(i));
-            currentPolylines.add(p);
-            List<LatLng> l = arr.get(i).getPoints();
-            for(int j = 0; j < l.size(); j++) {
-                builder.include(l.get(j));
-            }
-        }
-
-        // zoom out map
-        int padding = 100;
-        LatLngBounds bounds = builder.build();
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        mMap.animateCamera(cu);
-    }
-
+//    // This method is executed once the places api is finished. It places the route on the map
+//    @Override
+//    public void onTaskDone(Object... values) {
+//        if(currentPolylines != null && currentPolylines.size() > 0) {
+//            for(int i = 0; i < currentPolylines.size(); i++) {
+//                currentPolylines.get(i).remove();
+//            }
+//        }
+//
+//        currentPolylines = new ArrayList<>();
+//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//
+//        ArrayList<PolylineOptions> arr = (ArrayList<PolylineOptions>) values[0];
+//        for(int i = 0; i < arr.size(); i++) {
+//            Polyline p = mMap.addPolyline(arr.get(i));
+//            currentPolylines.add(p);
+//            List<LatLng> l = arr.get(i).getPoints();
+//            for(int j = 0; j < l.size(); j++) {
+//                builder.include(l.get(j));
+//            }
+//        }
+//
+//        // zoom out map
+//        int padding = 100;
+//        LatLngBounds bounds = builder.build();
+//        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+//        mMap.animateCamera(cu);
+//    }
 }

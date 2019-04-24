@@ -11,18 +11,35 @@ import java.util.HashMap;
 import java.util.List;
 
 class DataParser {
-    public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
+    public List<HashMap<String, String>> parse(JSONObject jObject, int detailCase) {
+        List<HashMap<String, String>> routes = new ArrayList<>();
 
-        List<List<HashMap<String, String>>> routes = new ArrayList<>();
-        JSONArray jRoutes;
-        JSONArray jLegs;
-        JSONArray jSteps;
-        try {
-            jRoutes = jObject.getJSONArray("routes");
-            /** Traversing all routes */
-            for (int i = 0; i < jRoutes.length(); i++) {
-                jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
-                List path = new ArrayList<>();
+        if(detailCase == BusApplication.ROUTE_MINOR_DETAILS) {
+            JSONArray jRoutes;
+            try {
+                jRoutes = jObject.getJSONArray("routes");
+                /** Traversing all routes */
+                for (int i = 0; i < jRoutes.length(); i++) {
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    hashMap.put("route_detail", jRoutes.get(i).toString());
+                    String fare = (String) ((JSONObject) ((JSONObject) jRoutes.get(i)).get("fare")).get("text");
+                    hashMap.put("fare", fare);
+                    JSONObject jLegs = (JSONObject) ((JSONObject) jRoutes.get(i)).getJSONArray("legs").get(0);
+                    hashMap.put("distance", (String) ((JSONObject) (jLegs.get("distance"))).get("text"));
+                    hashMap.put("duration",(String) ((JSONObject) (jLegs.get("duration"))).get("text"));
+                    hashMap.put("arrival_time",(String) ((JSONObject) (jLegs.get("arrival_time"))).get("text"));
+                    hashMap.put("departure_time",(String) ((JSONObject) (jLegs.get("departure_time"))).get("text"));
+                    routes.add(hashMap);
+                }
+
+            } catch (JSONException e) {
+            } catch (Exception e) {
+            }
+        } else if(detailCase == BusApplication.ROUTE_PATH_DETAILS) {
+            JSONArray jLegs;
+            JSONArray jSteps;
+            try {
+                jLegs = jObject.getJSONArray("legs");
                 /** Traversing all legs */
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
@@ -40,15 +57,14 @@ class DataParser {
                             hm.put("lat", Double.toString((list.get(l)).latitude));
                             hm.put("lng", Double.toString((list.get(l)).longitude));
                             hm.put("travel_mode", stepDirectionMode);
-                            path.add(hm);
+                            routes.add(hm);
                         }
                     }
-                    routes.add(path);
                 }
-            }
 
-        } catch (JSONException e) {
-        } catch (Exception e) {
+            } catch (JSONException e) {
+            } catch (Exception e) {
+            }
         }
         return routes;
     }

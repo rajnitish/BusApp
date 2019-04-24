@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +16,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 public class BusRouteActivity extends AppCompatActivity {
 
@@ -35,7 +33,6 @@ public class BusRouteActivity extends AppCompatActivity {
             return null;
         }
         return json;
-
     }
 
 
@@ -66,32 +63,24 @@ public class BusRouteActivity extends AppCompatActivity {
                 InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 in.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 in.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
-//                modelTextview2.setText(null);
                 String selection = (String)parent.getItemAtPosition(position);
                 try {
                     JSONObject obj = new JSONObject(loadJSONFromAsset(getBaseContext()));
                     JSONArray arrJson = obj.getJSONArray("bus_numbers");
-                    for(int i = 0; i < arrJson.length(); i++)
-                    {
+                    for(int i = 0; i < arrJson.length(); i++) {
                         JSONObject jsonobject = arrJson.getJSONObject(i);
                         String busno=(jsonobject.getString("bus_number"));
-                        if(selection.equals(busno))
-                        {
-
+                        if(selection.equals(busno)) {
                             JSONArray arrstops = jsonobject.getJSONArray("stops");
                             String[] bus_stop_arr = new String[arrstops.length()];
-                            for(int j = 0; j < arrstops.length(); j++)
-                            {
+                            for(int j = 0; j < arrstops.length(); j++) {
                                 bus_stop_arr[j] = arrstops.getString(j);
                             }
-                            String a1="List of Bus Stops\n"+ Arrays.toString(bus_stop_arr).replaceAll("\\[|\\]", "\n");
 
                             ArrayAdapter<String> adapterx = new ArrayAdapter<String>(BusRouteActivity.this, android.R.layout.simple_list_item_1 , bus_stop_arr );
                             // Prints Pretty, Cool, Weird
 
                             listView.setAdapter(adapterx);
-                            Toast.makeText(getApplicationContext(), a1 ,Toast.LENGTH_LONG).show();
-
                         }
                     }
 
@@ -100,13 +89,5 @@ public class BusRouteActivity extends AppCompatActivity {
                 }
             }
         });
-
-        actview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
 }

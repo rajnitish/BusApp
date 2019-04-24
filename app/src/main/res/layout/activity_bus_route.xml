@@ -29,7 +29,6 @@
         android:layout_marginRight="30dp"
         android:layout_weight="1"
         android:background="@drawable/rounded_edittext"
-        android:completionHint="Enter Bus Number"
         android:completionThreshold="1"
         android:hint="The number of the Bus route"
         android:inputType="number"
