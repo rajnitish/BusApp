@@ -16,10 +16,10 @@ public class ComplaintActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.complaints_view);
-        mEditTextSubject=findViewById(R.id.edit_text_subject);
-        mEditTextMessage=findViewById(R.id.edit_text_message);
+      //  mEditTextSubject=findViewById(R.id.edit_text_subject);
+      //  mEditTextMessage=findViewById(R.id.edit_text_message);
 
-        Button buttonSend = findViewById(R.id.button_send);
+         Button buttonSend = findViewById(R.id.buttonsend);
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,7 +29,7 @@ public class ComplaintActivity extends Activity {
     }
     private void sendMail(){
 //        String recipient = "anuj.avengerx@gmail.com";
-        String[] recipientList=new String[]{"anuj.avengerx@gmail.com","jaishreeram@gmail.com"};
+        String[] recipientList=new String[]{"raj.nitp@gmail.com","anuj.avengerx@gmail.com","jaishreeram@gmail.com"};
         String subject = "Customer_Complaint: "+mEditTextSubject.getText().toString();
         String message = mEditTextMessage.getText().toString();
 
