@@ -8,10 +8,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,15 +33,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,7 +58,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static com.google.android.gms.common.api.GoogleApiClient.*;
+import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,
@@ -218,12 +215,12 @@ public class MapsActivity extends AppCompatActivity implements
             }
         } else if (requestCode == MULTIPLE_ROUTE_ACTIVITY) {
             // Set text in textboxes
-            mStartingLocationTextbox.setText(((BusApplication)this.getApplication()).getStartingLocationName());
-            mFinalLocationTextbox.setText(((BusApplication)this.getApplication()).getFinalLocationName());
+            mStartingLocationTextbox.setText(((BusApplication) this.getApplication()).getStartingLocationName());
+            mFinalLocationTextbox.setText(((BusApplication) this.getApplication()).getFinalLocationName());
 
             // Set markers
-            startingLocationMarker.setPosition(((BusApplication)this.getApplication()).getStartingLocation());
-            finalLocationMarker.setPosition(((BusApplication)this.getApplication()).getFinalLocation());
+            startingLocationMarker.setPosition(((BusApplication) this.getApplication()).getStartingLocation());
+            finalLocationMarker.setPosition(((BusApplication) this.getApplication()).getFinalLocation());
         }
     }
 
@@ -274,6 +271,9 @@ public class MapsActivity extends AppCompatActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         if (mLocationPermissionGranted) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 

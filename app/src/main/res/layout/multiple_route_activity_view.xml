@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/quantum_white_100">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/from_location_layout">
+        <ImageView
+            android:layout_width="@dimen/location_icon_width"
+            android:layout_height="@dimen/location_icon_height"
+            android:src="@drawable/from_location_icon"
+            android:layout_marginTop="@dimen/icon_margin_top"
+            android:layout_marginLeft="@dimen/icon_margin_left"
+            android:id="@+id/from_location_icon"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/from_location_textbox"
+            android:background="@drawable/black_border_edittext"
+            android:layout_marginTop="@dimen/icon_margin_top"
+            android:layout_marginRight="@dimen/icon_margin_left"
+            android:layout_marginLeft="@dimen/icon_margin_left"
+            android:layout_toRightOf="@id/from_location_icon"
+            android:textSize="18sp"
+            android:inputType="text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/from_location_layout"
+        android:id="@+id/to_location_layout">
+        <ImageView
+            android:layout_width="@dimen/location_icon_width"
+            android:layout_height="@dimen/location_icon_height"
+            android:src="@drawable/to_location_icon"
+            android:layout_marginTop="@dimen/icon_margin_top"
+            android:layout_marginLeft="@dimen/icon_margin_left"
+            android:id="@+id/to_location_icon"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/to_location_textbox"
+            android:background="@drawable/black_border_edittext"
+            android:layout_marginTop="@dimen/icon_margin_top"
+            android:layout_marginRight="@dimen/icon_margin_left"
+            android:layout_marginLeft="@dimen/icon_margin_left"
+            android:layout_toRightOf="@id/to_location_icon"
+            android:textSize="18sp"
+            android:inputType="text" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/multiple_route_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/to_location_layout"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+</RelativeLayout>
