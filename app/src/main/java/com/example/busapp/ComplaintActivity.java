@@ -16,16 +16,16 @@ public class ComplaintActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.complaints_view);
-        mEditTextSubject=findViewById(R.id.edit_text_subject);
-        mEditTextMessage=findViewById(R.id.edit_text_message);
+      //  mEditTextSubject=findViewById(R.id.edit_text_subject);
+      //  mEditTextMessage=findViewById(R.id.edit_text_message);
 
-        Button buttonSend = findViewById(R.id.button_send);
-        buttonSend.setOnClickListener(new View.OnClickListener() {
+      //  Button buttonSend = findViewById(R.id.button_send);
+      /*  RESULT_OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMail();
             }
-        });
+        });*/
     }
     private void sendMail(){
 //        String recipient = "anuj.avengerx@gmail.com";

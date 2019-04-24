@@ -4,4 +4,6 @@
     <string name="close">Close</string>
     <string name="app_name">Bus App</string>
     <string name="title_activity_maps">Bus App</string>
+    <string name="the_number_of_the_bus_route">The number of the Bus route</string>
+    <string name="send">SEND</string>
 </resources>

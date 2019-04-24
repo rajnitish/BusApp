@@ -2,8 +2,7 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/quantum_white_100">
@@ -33,17 +32,17 @@
         android:hint="Enter your complaint"
         android:inputType="text|textMultiLine"
         android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/buttonsend"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/complaint_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/complaint_toolbar" tools:targetApi="o" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonsend"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:hint="SEND"
+        android:hint="@string/send"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.459"
@@ -53,49 +52,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <EditText
-        android:id="@+id/phoneText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="60dp"
-        android:ems="10"
-        android:inputType="phone"
-        android:text="Phone Number"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/complaint_messagebox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/emailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:text="email@xyz.com"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/phoneText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/nameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/emailText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
 
