@@ -19,17 +19,17 @@ public class ComplaintActivity extends Activity {
       //  mEditTextSubject=findViewById(R.id.edit_text_subject);
       //  mEditTextMessage=findViewById(R.id.edit_text_message);
 
-      //  Button buttonSend = findViewById(R.id.button_send);
-      /*  RESULT_OK.setOnClickListener(new View.OnClickListener() {
+         Button buttonSend = findViewById(R.id.buttonsend);
+        buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMail();
             }
-        });*/
+        });
     }
     private void sendMail(){
 //        String recipient = "anuj.avengerx@gmail.com";
-        String[] recipientList=new String[]{"anuj.avengerx@gmail.com","jaishreeram@gmail.com"};
+        String[] recipientList=new String[]{"raj.nitp@gmail.com","anuj.avengerx@gmail.com","jaishreeram@gmail.com"};
         String subject = "Customer_Complaint: "+mEditTextSubject.getText().toString();
         String message = mEditTextMessage.getText().toString();
 
