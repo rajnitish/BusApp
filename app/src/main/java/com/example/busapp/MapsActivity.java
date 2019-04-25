@@ -113,6 +113,9 @@ public class MapsActivity extends AppCompatActivity implements
                     case R.id.complaint_section:
                         startActivity(new Intent(MapsActivity.this, ComplaintActivity.class));
                         break;
+                    case R.id.about_us:
+                        startActivity(new Intent(MapsActivity.this, AboutUsActivity.class));
+                        break;
                     case R.id.exit_section:
                         startActivity(new Intent(MapsActivity.this, ExitActivity.class));
                         finish();
