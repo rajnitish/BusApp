@@ -46,5 +46,6 @@
         <activity android:name=".AboutUsActivity"/>
         <activity android:name=".ExitActivity"/>
     </application>
+    
 
 </manifest>
