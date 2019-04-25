@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/quantum_white_100">
+    android:background="@color/quantum_googblue50"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/complaint_toolbar"
@@ -14,43 +15,82 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Send Complaint" />
+        android:text="Send Complaint"
+        android:textColor="#000000">
 
+    <TextView
+        android:id="@+id/contact_form_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="1dp"
+        android:text="User Feedback"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        android:typeface="serif" />
+</android.support.v7.widget.Toolbar>
 
     <EditText
-        android:id="@+id/complaint_messagebox"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="232dp"
-        android:layout_marginBottom="8dp"
-        android:autofillHints=""
-        android:background="@drawable/rounded_edittext"
-        android:backgroundTint="@color/quantum_bluegrey300"
-        android:gravity="top|left"
-        android:hint="Enter your complaint"
-        android:inputType="text|textMultiLine"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonsend"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/complaint_toolbar" tools:targetApi="o" />
+        android:id="@+id/name_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDark1"
+        android:hint="Name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/email_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/colorPrimaryDark1"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/phone_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDark1"
+        android:hint="Phone"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/text_id"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/colorPrimaryDark1"
+        android:gravity="top"
+        android:hint="Your Message"
+        android:fitsSystemWindows="true"
+        android:breakStrategy="balanced"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:padding="5dp" />
 
     <Button
         android:id="@+id/buttonsend"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:hint="@string/send"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/complaint_messagebox"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimaryDark1"
+        android:elevation="4dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:text="Submit"
+        android:textColor="#fff" />
 
-</android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
+
+
+
+
+
+
+
 
