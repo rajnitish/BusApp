@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/bus_route"
-        android:title="Detailed Bus Route"/>
-    <item android:id="@+id/complaint_section"
-        android:title="Send Complaint"/>
-</menu>
