@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -32,6 +33,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -73,6 +76,7 @@ public class MapsActivity extends AppCompatActivity implements
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private GoogleMap mMap;
     private Location currentLocation;
+    LatLng origin = new LatLng(28.564659, 77.232880);
 
     // Markers
     Marker startingLocationMarker = null;
@@ -287,6 +291,23 @@ public class MapsActivity extends AppCompatActivity implements
             getDeviceLocation();
             setLocationUpdates();
 
+
+
+            if(currentLocation != null)
+            {
+                origin = new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude());
+
+            }
+            Circle circle = mMap.addCircle(new CircleOptions()
+                    .center(origin)
+                    .radius(5000)
+                    .strokeColor(Color.RED)
+                    .fillColor(getColorWithAlpha(Color.CYAN, 0.2f)));
+
+
+
+
+
             // Place the location button
             View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
@@ -379,6 +400,18 @@ public class MapsActivity extends AppCompatActivity implements
             }
 
         }, null);
+
+
+    }
+
+    private static int getColorWithAlpha(int color, float ratio) {
+        int newColor = 0;
+        int alpha = Math.round(Color.alpha(color) * ratio);
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+        newColor = Color.argb(alpha, r, g, b);
+        return newColor;
     }
 
     // This method marks the initial location and our current location
@@ -395,7 +428,9 @@ public class MapsActivity extends AppCompatActivity implements
 
                             // Set current location as starting location
                             setStartingLocation();
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), BusApplication.DEFAULT_ZOOM);
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 12.0f);
+
+
 
                             // Setup nearby bus markers
                             setBusMarkers();
@@ -412,8 +447,9 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     private void moveCamera(LatLng latLng, float zoom) {
-        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
-        mMap.animateCamera(cu);
+       CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
+       mMap.animateCamera(cu);
+
         hideSoftKeyboard();
     }
 
