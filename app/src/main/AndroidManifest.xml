@@ -29,7 +29,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBIvW1udXuwZm_W2Y5HQrbKd-vWP_BV7u4" /> <!-- Activities -->
+            android:value="AIzaSyC98_fRbzqKkOJAQZtcy-3ZC5nnRVHg58o" /> <!-- Activities -->
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
@@ -43,6 +43,7 @@
         <activity android:name=".BusDetailsActivity" />
         <activity android:name=".MultipleRouteActivity"/>
         <activity android:name=".BusRouteOnMapActivity"/>
+        <activity android:name=".ExitActivity"/>
     </application>
 
 </manifest>

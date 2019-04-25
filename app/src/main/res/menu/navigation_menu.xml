@@ -5,4 +5,6 @@
         android:title="Detailed Bus Route"/>
     <item android:id="@+id/complaint_section"
         android:title="Send Complaint"/>
+    <item android:id="@+id/exit_section"
+        android:title="Exit"/>
 </menu>
