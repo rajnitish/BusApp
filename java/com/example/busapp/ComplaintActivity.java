@@ -1,4 +1,4 @@
-package com.example.busapp;
+package com.nitish.busapp;
 
 import android.app.Activity;
 import android.content.Intent;

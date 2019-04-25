@@ -1,4 +1,4 @@
-package com.example.busapp;
+package com.nitish.busapp;
 
 
 import android.app.Activity;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.View;
 import android.widget.TextView;
 
 

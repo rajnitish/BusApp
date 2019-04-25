@@ -1,10 +1,9 @@
-package com.example.busapp;
+package com.nitish.busapp;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.util.Log;
 import android.widget.ImageView;
 
 public class ExitActivity extends Activity {

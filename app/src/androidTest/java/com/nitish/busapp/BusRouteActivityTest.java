@@ -1,10 +1,10 @@
-package com.example.busapp;
+package com.nitish.busapp;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BusDetailsActivityTest extends ExampleInstrumentedTest {
+public class BusRouteActivityTest extends ExampleInstrumentedTest {
 
     @Before
     public void setUp() throws Exception {
@@ -12,6 +12,430 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
 
     @After
     public void tearDown() throws Exception {
+    }
+
+    @Test
+    public void onCreate() {
+    }
+
+    @Test
+    public void setTheme() {
+    }
+
+    @Test
+    public void onPostCreate() {
+    }
+
+    @Test
+    public void getSupportActionBar() {
+    }
+
+    @Test
+    public void setSupportActionBar() {
+    }
+
+    @Test
+    public void getMenuInflater() {
+    }
+
+    @Test
+    public void setContentView() {
+    }
+
+    @Test
+    public void setContentView1() {
+    }
+
+    @Test
+    public void setContentView2() {
+    }
+
+    @Test
+    public void addContentView() {
+    }
+
+    @Test
+    public void onConfigurationChanged() {
+    }
+
+    @Test
+    public void onPostResume() {
+    }
+
+    @Test
+    public void onStart() {
+    }
+
+    @Test
+    public void onStop() {
+    }
+
+    @Test
+    public void findViewById() {
+    }
+
+    @Test
+    public void onMenuItemSelected() {
+    }
+
+    @Test
+    public void onDestroy() {
+    }
+
+    @Test
+    public void onTitleChanged() {
+    }
+
+    @Test
+    public void supportRequestWindowFeature() {
+    }
+
+    @Test
+    public void supportInvalidateOptionsMenu() {
+    }
+
+    @Test
+    public void invalidateOptionsMenu() {
+    }
+
+    @Test
+    public void onSupportActionModeStarted() {
+    }
+
+    @Test
+    public void onSupportActionModeFinished() {
+    }
+
+    @Test
+    public void onWindowStartingSupportActionMode() {
+    }
+
+    @Test
+    public void startSupportActionMode() {
+    }
+
+    @Test
+    public void setSupportProgressBarVisibility() {
+    }
+
+    @Test
+    public void setSupportProgressBarIndeterminateVisibility() {
+    }
+
+    @Test
+    public void setSupportProgressBarIndeterminate() {
+    }
+
+    @Test
+    public void setSupportProgress() {
+    }
+
+    @Test
+    public void onCreateSupportNavigateUpTaskStack() {
+    }
+
+    @Test
+    public void onPrepareSupportNavigateUpTaskStack() {
+    }
+
+    @Test
+    public void onSupportNavigateUp() {
+    }
+
+    @Test
+    public void getSupportParentActivityIntent() {
+    }
+
+    @Test
+    public void supportShouldUpRecreateTask() {
+    }
+
+    @Test
+    public void supportNavigateUpTo() {
+    }
+
+    @Test
+    public void onContentChanged() {
+    }
+
+    @Test
+    public void onSupportContentChanged() {
+    }
+
+    @Test
+    public void getDrawerToggleDelegate() {
+    }
+
+    @Test
+    public void onMenuOpened() {
+    }
+
+    @Test
+    public void onPanelClosed() {
+    }
+
+    @Test
+    public void onSaveInstanceState() {
+    }
+
+    @Test
+    public void getDelegate() {
+    }
+
+    @Test
+    public void dispatchKeyEvent() {
+    }
+
+    @Test
+    public void getResources() {
+    }
+
+    @Test
+    public void onKeyDown() {
+    }
+
+    @Test
+    public void openOptionsMenu() {
+    }
+
+    @Test
+    public void closeOptionsMenu() {
+    }
+
+    @Test
+    public void onActivityResult() {
+    }
+
+    @Test
+    public void onBackPressed() {
+    }
+
+    @Test
+    public void supportFinishAfterTransition() {
+    }
+
+    @Test
+    public void setEnterSharedElementCallback() {
+    }
+
+    @Test
+    public void setExitSharedElementCallback() {
+    }
+
+    @Test
+    public void supportPostponeEnterTransition() {
+    }
+
+    @Test
+    public void supportStartPostponedEnterTransition() {
+    }
+
+    @Test
+    public void onMultiWindowModeChanged() {
+    }
+
+    @Test
+    public void onPictureInPictureModeChanged() {
+    }
+
+    @Test
+    public void onConfigurationChanged1() {
+    }
+
+    @Test
+    public void getViewModelStore() {
+    }
+
+    @Test
+    public void getLifecycle() {
+    }
+
+    @Test
+    public void onCreate1() {
+    }
+
+    @Test
+    public void onCreatePanelMenu() {
+    }
+
+    @Test
+    public void onCreateView() {
+    }
+
+    @Test
+    public void onCreateView1() {
+    }
+
+    @Test
+    public void dispatchFragmentsOnCreateView() {
+    }
+
+    @Test
+    public void onDestroy1() {
+    }
+
+    @Test
+    public void onLowMemory() {
+    }
+
+    @Test
+    public void onMenuItemSelected1() {
+    }
+
+    @Test
+    public void onPanelClosed1() {
+    }
+
+    @Test
+    public void onPause() {
+    }
+
+    @Test
+    public void onNewIntent() {
+    }
+
+    @Test
+    public void onStateNotSaved() {
+    }
+
+    @Test
+    public void onResume() {
+    }
+
+    @Test
+    public void onPostResume1() {
+    }
+
+    @Test
+    public void onResumeFragments() {
+    }
+
+    @Test
+    public void onPreparePanel() {
+    }
+
+    @Test
+    public void onPrepareOptionsPanel() {
+    }
+
+    @Test
+    public void onRetainNonConfigurationInstance() {
+    }
+
+    @Test
+    public void onSaveInstanceState1() {
+    }
+
+    @Test
+    public void onStart1() {
+    }
+
+    @Test
+    public void onStop1() {
+    }
+
+    @Test
+    public void onRetainCustomNonConfigurationInstance() {
+    }
+
+    @Test
+    public void getLastCustomNonConfigurationInstance() {
+    }
+
+    @Test
+    public void supportInvalidateOptionsMenu1() {
+    }
+
+    @Test
+    public void dump() {
+    }
+
+    @Test
+    public void onAttachFragment() {
+    }
+
+    @Test
+    public void getSupportFragmentManager() {
+    }
+
+    @Test
+    public void getSupportLoaderManager() {
+    }
+
+    @Test
+    public void startActivityForResult() {
+    }
+
+    @Test
+    public void startActivityForResult1() {
+    }
+
+    @Test
+    public void startIntentSenderForResult() {
+    }
+
+    @Test
+    public void startIntentSenderForResult1() {
+    }
+
+    @Test
+    public void checkForValidRequestCode() {
+    }
+
+    @Test
+    public void validateRequestPermissionsRequestCode() {
+    }
+
+    @Test
+    public void onRequestPermissionsResult() {
+    }
+
+    @Test
+    public void startActivityFromFragment() {
+    }
+
+    @Test
+    public void startActivityFromFragment1() {
+    }
+
+    @Test
+    public void startIntentSenderFromFragment() {
+    }
+
+    @Test
+    public void requestPermissionsFromFragment() {
+    }
+
+    @Test
+    public void putExtraData() {
+    }
+
+    @Test
+    public void onCreate2() {
+    }
+
+    @Test
+    public void onSaveInstanceState2() {
+    }
+
+    @Test
+    public void getExtraData() {
+    }
+
+    @Test
+    public void getLifecycle1() {
+    }
+
+    @Test
+    public void superDispatchKeyEvent() {
+    }
+
+    @Test
+    public void dispatchKeyShortcutEvent() {
+    }
+
+    @Test
+    public void dispatchKeyEvent1() {
     }
 
     @Test
@@ -55,11 +479,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onCreate() {
+    public void onCreate3() {
     }
 
     @Test
-    public void onCreate1() {
+    public void onCreate4() {
     }
 
     @Test
@@ -71,15 +495,15 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onPostCreate() {
-    }
-
-    @Test
     public void onPostCreate1() {
     }
 
     @Test
-    public void onStart() {
+    public void onPostCreate2() {
+    }
+
+    @Test
+    public void onStart2() {
     }
 
     @Test
@@ -87,15 +511,15 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onStateNotSaved() {
+    public void onStateNotSaved1() {
     }
 
     @Test
-    public void onResume() {
+    public void onResume1() {
     }
 
     @Test
-    public void onPostResume() {
+    public void onPostResume2() {
     }
 
     @Test
@@ -131,19 +555,19 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onNewIntent() {
+    public void onNewIntent1() {
     }
 
     @Test
-    public void onSaveInstanceState() {
+    public void onSaveInstanceState3() {
     }
 
     @Test
-    public void onSaveInstanceState1() {
+    public void onSaveInstanceState4() {
     }
 
     @Test
-    public void onPause() {
+    public void onPause1() {
     }
 
     @Test
@@ -183,11 +607,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onStop() {
+    public void onStop2() {
     }
 
     @Test
-    public void onDestroy() {
+    public void onDestroy2() {
     }
 
     @Test
@@ -195,11 +619,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onMultiWindowModeChanged() {
+    public void onMultiWindowModeChanged1() {
     }
 
     @Test
-    public void onMultiWindowModeChanged1() {
+    public void onMultiWindowModeChanged2() {
     }
 
     @Test
@@ -207,11 +631,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onPictureInPictureModeChanged() {
+    public void onPictureInPictureModeChanged1() {
     }
 
     @Test
-    public void onPictureInPictureModeChanged1() {
+    public void onPictureInPictureModeChanged2() {
     }
 
     @Test
@@ -235,7 +659,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onConfigurationChanged() {
+    public void onConfigurationChanged2() {
     }
 
     @Test
@@ -247,11 +671,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onRetainNonConfigurationInstance() {
+    public void onRetainNonConfigurationInstance1() {
     }
 
     @Test
-    public void onLowMemory() {
+    public void onLowMemory1() {
     }
 
     @Test
@@ -263,7 +687,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onAttachFragment() {
+    public void onAttachFragment1() {
     }
 
     @Test
@@ -279,7 +703,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void findViewById() {
+    public void findViewById1() {
     }
 
     @Test
@@ -295,19 +719,19 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void setContentView() {
+    public void setContentView3() {
     }
 
     @Test
-    public void setContentView1() {
+    public void setContentView4() {
     }
 
     @Test
-    public void setContentView2() {
+    public void setContentView5() {
     }
 
     @Test
-    public void addContentView() {
+    public void addContentView1() {
     }
 
     @Test
@@ -331,7 +755,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onKeyDown() {
+    public void onKeyDown1() {
     }
 
     @Test
@@ -347,7 +771,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onBackPressed() {
+    public void onBackPressed1() {
     }
 
     @Test
@@ -375,7 +799,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onContentChanged() {
+    public void onContentChanged1() {
     }
 
     @Test
@@ -395,11 +819,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void dispatchKeyEvent() {
+    public void dispatchKeyEvent2() {
     }
 
     @Test
-    public void dispatchKeyShortcutEvent() {
+    public void dispatchKeyShortcutEvent1() {
     }
 
     @Test
@@ -423,27 +847,27 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onCreatePanelMenu() {
+    public void onCreatePanelMenu1() {
     }
 
     @Test
-    public void onPreparePanel() {
+    public void onPreparePanel1() {
     }
 
     @Test
-    public void onMenuOpened() {
+    public void onMenuOpened1() {
     }
 
     @Test
-    public void onMenuItemSelected() {
+    public void onMenuItemSelected2() {
     }
 
     @Test
-    public void onPanelClosed() {
+    public void onPanelClosed2() {
     }
 
     @Test
-    public void invalidateOptionsMenu() {
+    public void invalidateOptionsMenu1() {
     }
 
     @Test
@@ -479,11 +903,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void openOptionsMenu() {
+    public void openOptionsMenu1() {
     }
 
     @Test
-    public void closeOptionsMenu() {
+    public void closeOptionsMenu1() {
     }
 
     @Test
@@ -595,11 +1019,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void getMenuInflater() {
+    public void getMenuInflater1() {
     }
 
     @Test
-    public void setTheme() {
+    public void setTheme1() {
     }
 
     @Test
@@ -611,7 +1035,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onRequestPermissionsResult() {
+    public void onRequestPermissionsResult1() {
     }
 
     @Test
@@ -619,11 +1043,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void startActivityForResult() {
+    public void startActivityForResult2() {
     }
 
     @Test
-    public void startActivityForResult1() {
+    public void startActivityForResult3() {
     }
 
     @Test
@@ -631,11 +1055,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void startIntentSenderForResult() {
+    public void startIntentSenderForResult2() {
     }
 
     @Test
-    public void startIntentSenderForResult1() {
+    public void startIntentSenderForResult3() {
     }
 
     @Test
@@ -687,11 +1111,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void startActivityFromFragment() {
+    public void startActivityFromFragment2() {
     }
 
     @Test
-    public void startActivityFromFragment1() {
+    public void startActivityFromFragment3() {
     }
 
     @Test
@@ -783,7 +1207,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onActivityResult() {
+    public void onActivityResult1() {
     }
 
     @Test
@@ -851,7 +1275,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onTitleChanged() {
+    public void onTitleChanged1() {
     }
 
     @Test
@@ -903,15 +1327,15 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onCreateView() {
+    public void onCreateView2() {
     }
 
     @Test
-    public void onCreateView1() {
+    public void onCreateView3() {
     }
 
     @Test
-    public void dump() {
+    public void dump1() {
     }
 
     @Test
@@ -979,11 +1403,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void setEnterSharedElementCallback() {
+    public void setEnterSharedElementCallback1() {
     }
 
     @Test
-    public void setExitSharedElementCallback() {
+    public void setExitSharedElementCallback1() {
     }
 
     @Test
@@ -1031,11 +1455,11 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void getResources() {
+    public void getResources1() {
     }
 
     @Test
-    public void setTheme1() {
+    public void setTheme2() {
     }
 
     @Test
@@ -1063,7 +1487,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void getResources1() {
+    public void getResources2() {
     }
 
     @Test
@@ -1087,7 +1511,7 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void setTheme2() {
+    public void setTheme3() {
     }
 
     @Test
@@ -1547,6 +1971,10 @@ public class BusDetailsActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void onCreate2() {
+    public void loadJSONFromAsset() {
+    }
+
+    @Test
+    public void onCreate5() {
     }
 }

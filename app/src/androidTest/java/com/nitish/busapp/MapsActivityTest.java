@@ -1,10 +1,10 @@
-package com.example.busapp;
+package com.nitish.busapp;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BusRouteActivityTest extends ExampleInstrumentedTest {
+public class MapsActivityTest extends ExampleInstrumentedTest {
 
     @Before
     public void setUp() throws Exception {
@@ -1971,10 +1971,30 @@ public class BusRouteActivityTest extends ExampleInstrumentedTest {
     }
 
     @Test
-    public void loadJSONFromAsset() {
+    public void onCreate5() {
     }
 
     @Test
-    public void onCreate5() {
+    public void onOptionsItemSelected1() {
+    }
+
+    @Test
+    public void onActivityResult2() {
+    }
+
+    @Test
+    public void onRequestPermissionsResult2() {
+    }
+
+    @Test
+    public void onMapReady() {
+    }
+
+    @Test
+    public void onConnectionFailed() {
+    }
+
+    @Test
+    public void onTaskDone() {
     }
 }

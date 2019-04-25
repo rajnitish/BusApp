@@ -1,4 +1,4 @@
-package com.example.busapp;
+package com.nitish.busapp;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

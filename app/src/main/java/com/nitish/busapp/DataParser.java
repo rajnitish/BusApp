@@ -1,4 +1,4 @@
-package com.example.busapp;
+package com.nitish.busapp;
 
 import com.google.android.gms.maps.model.LatLng;
 
