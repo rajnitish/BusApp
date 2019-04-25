@@ -112,7 +112,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 @@ -1,15 +1,14 @@
  <?xml version="1.0" encoding="utf-8"?>
  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-     package="com.example.busapp">
+     package="com.nitish.busapp">
 -
      <!--
           The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -245,7 +245,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 --- app/src/main/java/com/example/busapp/ComplaintActivity.java	(revision 29fe50633f91c831383197dfbffa8a390be3ebc6)
 +++ app/src/main/java/com/example/busapp/ComplaintActivity.java	(date 1555924208000)
 @@ -1,5 +1,13 @@
- package com.example.busapp;
+ package com.nitish.busapp;
  
 -public class ComplaintActivity {
 +import android.app.Activity;
