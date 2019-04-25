@@ -23,6 +23,7 @@ public class BusDetailsActivity extends Activity {
         driverNameTextview = findViewById(R.id.bus_driver_name_box);
         busColorTextview = findViewById(R.id.bus_color_box);
         busCapacityTextview = findViewById(R.id.bus_capacity_box);
+        
 
         String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=2&ID=" + bus_id;
         new FetchSQLQuery(BusDetailsActivity.this, new FetchSQLQuery.AsyncResponse() {
