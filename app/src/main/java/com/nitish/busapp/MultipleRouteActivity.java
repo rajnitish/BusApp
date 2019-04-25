@@ -1,9 +1,13 @@
 package com.nitish.busapp;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +24,10 @@ import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +46,7 @@ public class MultipleRouteActivity extends AppCompatActivity implements
     private ListView multipleRouteListview;
 
     // Arrays
+    ArrayList<SpannableString> PATH = null;
     ArrayList<String> ROUTE_DETAIL = null;
     ArrayList<String> FARE = null;
     ArrayList<String> DISTANCE = null;
@@ -54,6 +63,12 @@ public class MultipleRouteActivity extends AppCompatActivity implements
         fromLocationTextbox = findViewById(R.id.from_location_textbox);
         toLocationTextbox = findViewById(R.id.to_location_textbox);
         multipleRouteListview = findViewById(R.id.multiple_route_listview);
+
+        toLocationTextbox.setEnabled(false);
+        fromLocationTextbox.setEnabled(false);
+        toLocationTextbox.setFocusable(false);
+        fromLocationTextbox.setFocusable(false);
+
 
         // Fill initial locations
         fromLocationTextbox.setText(((BusApplication)this.getApplication()).getStartingLocationName());
@@ -150,7 +165,7 @@ public class MultipleRouteActivity extends AppCompatActivity implements
         String transit_mode = "transit_mode=bus";
         String parameters = str_origin + "&" + str_dest + "&" + mode + "&" + transit_mode + "&alternatives=true";
         String output = "json";
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=AIzaSyCSrpzMTna9S8hI-gmHVwlxvqC8QnPFPZY";
         return url;
     }
 
@@ -195,6 +210,12 @@ public class MultipleRouteActivity extends AppCompatActivity implements
             DEPARTURE_TIME.clear();
         }
 
+        if(PATH == null) {
+            PATH = new ArrayList<>();
+        } else {
+            PATH.clear();
+        }
+
         for(int i=0; i < routes.size(); i++) {
             ROUTE_DETAIL.add(routes.get(i).get("route_detail"));
             FARE.add(routes.get(i).get("fare"));
@@ -202,6 +223,43 @@ public class MultipleRouteActivity extends AppCompatActivity implements
             DURATION.add(routes.get(i).get("duration"));
             ARRIVAL_TIME.add(routes.get(i).get("arrival_time"));
             DEPARTURE_TIME.add(routes.get(i).get("departure_time"));
+
+            // Set icons
+            Drawable busIcon = getResources().getDrawable(R.drawable.bus2);
+            busIcon.setBounds(0, 0, busIcon.getIntrinsicWidth(), busIcon.getIntrinsicHeight());
+            Drawable walkIcon = getResources().getDrawable(R.drawable.walk2);
+            walkIcon.setBounds(0, 0, walkIcon.getIntrinsicWidth(), walkIcon.getIntrinsicHeight());
+
+            // Set image path
+            String str = "";
+            try {
+                JSONObject route = new JSONObject(routes.get(i).get("route_detail"));
+                JSONArray steps = ((JSONObject) (route.getJSONArray("legs").get(0))).getJSONArray("steps");
+                for (int j = 0; j < steps.length(); j++) {
+                    JSONObject currStep = (JSONObject) steps.get(j);
+                    String travelMode = currStep.get("travel_mode").toString();
+                    if (travelMode.equalsIgnoreCase("walking")) {
+                        str = str + "@@@ > ";
+                    } else if(travelMode.equalsIgnoreCase("transit")) {
+                        str = str + "$$$ " + ((JSONObject)(((JSONObject) currStep.get("transit_details")).get("line"))).get("short_name").toString() + " > ";
+                    }
+                }
+            } catch(JSONException e) {
+            }
+            String newStr = str.substring(0, str.length()-3);
+            SpannableString spanStr = new SpannableString(newStr);
+            for(int j = 0; j < newStr.length(); j++) {
+                if(newStr.charAt(j) == '@') {
+                    ImageSpan span = new ImageSpan(walkIcon, ImageSpan.ALIGN_BASELINE);
+                    spanStr.setSpan(span, j, j+3, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    j+=5;
+                } else if(newStr.charAt(j) == '$') {
+                    ImageSpan span = new ImageSpan(busIcon, ImageSpan.ALIGN_BASELINE);
+                    spanStr.setSpan(span, j, j+3, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    j+=3;
+                }
+            }
+            PATH.add(spanStr);
         }
 
         // Populate list view
@@ -234,23 +292,16 @@ public class MultipleRouteActivity extends AppCompatActivity implements
             TextView duration_textview = convertView.findViewById(R.id.duration_textview);
             TextView fare_textview = convertView.findViewById(R.id.fare_textview);
             TextView distance_textview = convertView.findViewById(R.id.distance_textview);
-//            TextView route_details_textview = convertView.findViewById(R.id.route_detail_textview);
+            TextView route_details_textview = convertView.findViewById(R.id.route_detail_textview);
 
             eta_textview.setText(DEPARTURE_TIME.get(position) + "-" + ARRIVAL_TIME.get(position));
             duration_textview.setText(DURATION.get(position));
             fare_textview.setText(FARE.get(position));
             distance_textview.setText(DISTANCE.get(position));
-
-//            SpannableString ss = new SpannableString("abc");
-//            Drawable d = getResources().getDrawable(R.drawable.bus2);
-//            ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-//            ss.setSpan(span, 0, 3, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-//            route_details_textview.setText(ss);
-
+            route_details_textview.setText(PATH.get(position));
             return convertView;
         }
     }
 
 }
-
 

@@ -14,7 +14,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -32,7 +35,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -67,6 +69,55 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
         getLocationPermission();
 
         new FetchURL(BusRouteOnMapActivity.this, BusApplication.ROUTE_PATH_DETAILS).execute(json);
+        populateContent(json);
+    }
+
+    private void populateContent(String json) {
+        JSONObject obj = null;
+        try {
+            obj = new JSONObject(json);
+            String fare = obj.getJSONObject("fare").getString("text");
+            JSONObject main_obj = obj.getJSONArray("legs").getJSONObject(0);
+
+            String arrival_time= main_obj.getJSONObject("arrival_time").getString("text");
+            String depart_time= main_obj.getJSONObject("departure_time").getString("text");
+            String travel_dist= main_obj.getJSONObject("distance").getString("text");
+            String travel_duration = main_obj.getJSONObject("duration").getString("text");
+
+            JSONArray jArr = main_obj.getJSONArray("steps");
+
+            TextView eta_textview = findViewById(R.id.eta_text_detail);
+            TextView duration_textview = findViewById(R.id.duration_text_detail);
+            TextView fare_textview = findViewById(R.id.fare_text_detail);
+            TextView distance_textview = findViewById(R.id.distance_text_detail);
+
+            eta_textview.setText(depart_time + "-" + arrival_time);
+            duration_textview.setText(travel_duration);
+            fare_textview.setText(fare);
+            distance_textview.setText(travel_dist);
+
+            String[] directionsarr = new String[jArr.length()];
+            String[] extra_arr = new String[jArr.length()];
+            for(int i = 0; i < jArr.length(); i++) {
+                JSONObject jsonobject = jArr.getJSONObject(i);
+                directionsarr[i] = jsonobject.getString("html_instructions");
+                extra_arr[i] = jsonobject.getString("travel_mode");
+                if(extra_arr[i].equals("TRANSIT")) {
+                    JSONObject currobj = jsonobject.getJSONObject("transit_details");
+                    String busnum = "";
+                    try {
+                        busnum=currobj.getJSONObject("line").getString("short_name");
+                    } catch (Exception e) {
+                    }
+                    extra_arr[i] = "Travel "+currobj.getString("num_stops")+" stops by Bus "+ busnum;
+                    directionsarr[i] = extra_arr[i]+"\n"+directionsarr[i];
+                }
+            }
+            ListView listView = findViewById(R.id.direction_view_detail);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,directionsarr );
+            listView.setAdapter(adapter);
+        } catch (Exception e) {
+        }
     }
 
     // Gets the required permissions
@@ -193,7 +244,7 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
 
     // Set nearby bus markers on map
     void setBusMarkers() {
-        String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
+        String query_url = "https://busappgp16.000webhostapp.com/retrieve.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
         new FetchSQLQuery(BusRouteOnMapActivity.this, new FetchSQLQuery.AsyncResponse() {
             @Override
             public void processFinish(String output) {
@@ -246,7 +297,7 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
 
         ArrayList<PolylineOptions> arr = (ArrayList<PolylineOptions>) values[0];
         for(int i = 0; i < arr.size(); i++) {
-            Polyline p = mMap.addPolyline(arr.get(i));
+            mMap.addPolyline(arr.get(i));
             List<LatLng> l = arr.get(i).getPoints();
             for(int j = 0; j < l.size(); j++) {
                 builder.include(l.get(j));

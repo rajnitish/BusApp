@@ -31,6 +31,7 @@
         android:id="@+id/bus_no_box"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="60dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/bus_detail_toolbar"
         android:background="@drawable/rounded_edittext"
         android:textSize="22sp" />
@@ -51,6 +52,7 @@
         android:id="@+id/bus_driver_name_box"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/bus_no_box"
         android:background="@drawable/rounded_edittext"
         android:textSize="22sp" />
@@ -71,6 +73,7 @@
         android:id="@+id/bus_color_box"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/bus_driver_name_box"
         android:background="@drawable/rounded_edittext"
         android:textSize="22sp" />
@@ -91,6 +94,7 @@
         android:id="@+id/bus_capacity_box"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/bus_color_box"
         android:background="@drawable/rounded_edittext"
         android:textSize="22sp" />

@@ -133,7 +133,7 @@ public class MapsActivity extends AppCompatActivity implements
         getLocationPermission();
 
         // Initialize Places
-        Places.initialize(getApplicationContext(), "AIzaSyC98_fRbzqKkOJAQZtcy-3ZC5nnRVHg58o");
+        Places.initialize(getApplicationContext(), "AIzaSyCSrpzMTna9S8hI-gmHVwlxvqC8QnPFPZY");
 
         // Set the fields to specify which types of place data to return
         final List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
@@ -353,7 +353,7 @@ public class MapsActivity extends AppCompatActivity implements
 
     // Set nearby bus markers on map
     void setBusMarkers() {
-        String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
+        String query_url = "https://busappgp16.000webhostapp.com/retrieve.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
         new FetchSQLQuery(MapsActivity.this, new FetchSQLQuery.AsyncResponse() {
             @Override
             public void processFinish(String output) {

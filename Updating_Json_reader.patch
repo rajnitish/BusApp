@@ -378,7 +378,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
                              moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
 +
 +                            // Setup markers
-+                            String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
++                            String query_url = "https://busappgp16.000webhostapp.com/retrieve.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
 +                            new FetchSQLQuery(MapsActivity.this, new FetchSQLQuery.AsyncResponse() {
 +                                @Override
 +                                public void processFinish(String output) {

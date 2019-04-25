@@ -38,7 +38,7 @@ public class ComplaintActivity extends Activity {
     }
     private void sendMail(){
 
-        String[] recipientList=new String[]{"raj.nitp@gmail.com","anuj.avengerx@gmail.com","jaishreeram@gmail.com","mpsiitd2018@gmail.com "};
+        String[] recipientList=new String[]{"raj.nitp@gmail.com","mpsiitd2018@gmail.com "};
         String subject = "Consumer Feedback/Complaint for BusApp V0.9";
         String message = "Dear BusApp Team \n\n" +"Greetings! "+ mFeedbackText.getText().toString() + "\n\n Thanks & Regards \n Name: " + mNameText.getText().toString() + "\n Email Id :" + mEmailText.getText().toString() + "\n Phone no: "
                 + mPhoneText.getText().toString();

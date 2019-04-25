@@ -5,10 +5,18 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:background="@color/colorPrimaryDark">
-    <ImageView
+
+       <ImageView
         android:layout_width="180dp"
-        android:layout_height="130dp"
+        android:layout_height="25dp"
         android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/images1" />
 
 </LinearLayout>

@@ -25,7 +25,7 @@ public class BusDetailsActivity extends Activity {
         busCapacityTextview = findViewById(R.id.bus_capacity_box);
 
 
-        String query_url = "https://busappcol740.000webhostapp.com/get_all_buses.php?case=2&ID=" + bus_id;
+        String query_url = "https://busappgp16.000webhostapp.com/retrieve.php?case=2&ID=" + bus_id;
         new FetchSQLQuery(BusDetailsActivity.this, new FetchSQLQuery.AsyncResponse() {
             @Override
             public void processFinish(String output) {

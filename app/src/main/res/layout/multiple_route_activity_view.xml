@@ -17,15 +17,17 @@
             android:id="@+id/from_location_icon"/>
 
         <EditText
+            android:id="@+id/from_location_textbox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/from_location_textbox"
-            android:layout_marginTop="@dimen/icon_margin_top"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="@dimen/icon_margin_left"
-            android:layout_marginLeft="@dimen/icon_margin_left"
+            android:layout_marginBottom="0dp"
             android:layout_toRightOf="@id/from_location_icon"
-            android:textSize="18sp"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -33,6 +35,7 @@
         android:layout_height="40dp"
         android:layout_below="@id/from_location_layout"
         android:id="@+id/to_location_layout">
+
         <ImageView
             android:layout_width="@dimen/location_icon_width"
             android:layout_height="@dimen/location_icon_height"
@@ -42,25 +45,30 @@
             android:id="@+id/to_location_icon"/>
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/to_location_textbox"
-            android:layout_marginTop="@dimen/icon_margin_top"
+            android:layout_width="328dp"
+            android:layout_height="33dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="@dimen/icon_margin_left"
-            android:layout_marginLeft="@dimen/icon_margin_left"
+            android:layout_marginBottom="0dp"
             android:layout_toRightOf="@id/to_location_icon"
-            android:textSize="18sp"
-            android:inputType="text" />
+            android:focusable="false"
+            android:inputType="text"
+            android:textIsSelectable="true"
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <ListView
         android:id="@+id/multiple_route_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="587dp"
         android:layout_below="@id/to_location_layout"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp" />
 
 </RelativeLayout>

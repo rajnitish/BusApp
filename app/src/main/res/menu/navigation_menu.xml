@@ -2,12 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/bus_route"
-        android:title="Detailed Bus Route"/>
+        android:title="Detailed Bus Route"
+        android:icon="@drawable/detail"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center" />
+
     <item android:id="@+id/complaint_section"
-        android:title="Send Complaint"/>
+        android:title="Send Complaint"
+        android:icon="@drawable/complaint"/>
     <item android:id="@+id/about_us"
-        android:title="About Us"/>
+        android:title="About Us"
+        android:icon="@drawable/aboutus"/>
     <item android:id="@+id/exit_section"
-        android:title="Exit"/>
+        android:title="Exit"
+        android:icon="@drawable/exit"/>
 
 </menu>
