@@ -51,6 +51,7 @@ import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,7 +96,6 @@ public class Activity_Maps extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d("NITISH"," NNNNNNNNNNN.....");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
@@ -136,7 +136,7 @@ public class Activity_Maps extends AppCompatActivity implements
         getLocationPermission();
 
         // Initialize Places
-        Places.initialize(getApplicationContext(), "ENTER YOUR GOOGLE API KEY ");
+        Places.initialize(getApplicationContext(), "Enter your Google API Key");
 
         // Set the fields to specify which types of place data to return
         final List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
@@ -174,6 +174,7 @@ public class Activity_Maps extends AppCompatActivity implements
             return true;
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,11 +297,6 @@ public class Activity_Maps extends AppCompatActivity implements
             setLocationUpdates();
 
 
-
-
-
-
-
             // Place the location button
             View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
@@ -319,6 +315,7 @@ public class Activity_Maps extends AppCompatActivity implements
 
         }
     }
+
 
     // Set starting location marker as current location
     void setStartingLocation() {
@@ -364,9 +361,14 @@ public class Activity_Maps extends AppCompatActivity implements
                     for (int i = 0; i < jsonArray.length(); i++) {
                         double lat = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lat"));
                         double lng = Double.parseDouble((String) ((JSONObject) jsonArray.get(i)).get("Lng"));
+
+                        if(SphericalUtil.computeDistanceBetween(new LatLng(lat, lng), origin) >5000)
+                          continue;
+
+                        double range = SphericalUtil.computeDistanceBetween(new LatLng(lat, lng), origin);
                         Marker tempMarker = mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat, lng))
-                                .title((String) (((JSONObject) jsonArray.get(i)).get("ID")))
+                                .title((String) (((JSONObject) jsonArray.get(i)).get("Bus_Number")))
                                 .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
                         busMarkers.add(tempMarker);
                     }

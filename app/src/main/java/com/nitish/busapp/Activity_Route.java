@@ -23,7 +23,7 @@ public class Activity_Route extends AppCompatActivity {
     public String loadJSONFromAsset(Context context) {
         String json = null;
         try {
-            InputStream is = context.getAssets().open("jsondata.json");
+            InputStream is = context.getAssets().open("BusRouteinfo.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

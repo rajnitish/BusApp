@@ -166,7 +166,7 @@ public class Activity_RouteMultiple extends AppCompatActivity implements
         String transit_mode = "transit_mode=bus";
         String parameters = str_origin + "&" + str_dest + "&" + mode + "&" + transit_mode + "&alternatives=true";
         String output = "json";
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=ENTER YOUR GOOGLE API KEY ";
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=Google API key";
         return url;
     }
 
@@ -175,11 +175,7 @@ public class Activity_RouteMultiple extends AppCompatActivity implements
         List<HashMap<String, String>> routes = (List<HashMap<String, String>>) values[0];
 
         // Populate arrays
-        if(ROUTE_DETAIL == null) {
-            ROUTE_DETAIL = new ArrayList<>();
-        } else {
-            ROUTE_DETAIL.clear();
-        }
+        if(ROUTE_DETAIL == null) {           ROUTE_DETAIL = new ArrayList<>();       } else {          ROUTE_DETAIL.clear();        }
 
         if(FARE == null) {       FARE = new ArrayList<>();         } else {         FARE.clear();        }
 

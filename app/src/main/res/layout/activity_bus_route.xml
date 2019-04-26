@@ -4,26 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity_Route">
+
     <ListView
         android:id="@+id/contentView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="587dp"
         android:layout_gravity="center"
-        android:layout_marginTop="170dp"
         android:layout_marginLeft="30dp"
+        android:layout_marginTop="100dp"
         android:layout_marginRight="30dp"
         android:background="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-        android:textSize="22sp"
-        android:textColor="@color/quantum_black_100"
-        />
+        android:textColor="#E70D0D"
+        android:textSize="46dp" />
 
     <AutoCompleteTextView
         android:id="@+id/actv"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
         android:layout_weight="1"
         android:background="@drawable/rounded_edittext"

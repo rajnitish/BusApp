@@ -2,7 +2,7 @@
   "about":"Bus_info",
   "bus_numbers":[
     {
-      "bus_number":"502",
+      "bus_number":"522",
       "stops":[
         "Old Delhi Railway Station",
         "Red Fort",
@@ -16,10 +16,27 @@
         "Police Training School",
         "Mehrauli"
       ],
-      "string":"Hello World"
+      "string":"Nitish"
     },
     {
-      "bus_number":"764",
+      "bus_number":"971",
+      "stops":[
+        "Old Delhi Railway Station",
+        "Red Fort",
+        "Delhi Gate",
+        "Supreme Court",
+        "Shahjahan Road",
+        "Prithviraj Road",
+        "Safdarjang Airport",
+        "Safdarjang Hospital",
+        "IIT Gate",
+        "Police Training School",
+        "Mehrauli"
+      ],
+      "string":"Nitish"
+    },
+    {
+      "bus_number":"702",
       "stops":[
         "Najaf Garh",
         "Nangli Sakrawati",
@@ -41,10 +58,95 @@
         "O.S. Communication",
         "Nehru Place Terminal"
       ],
-      "string":"Hello World"
+      "string":"Nitish"
     },
     {
-      "bus_number":"507",
+      "bus_number":"432",
+      "stops":[
+        "Najaf Garh",
+        "Nangli Sakrawati",
+        "Kakrola Bridge",
+        "Netaji Subhash Institute Of Technology",
+        "DPS Matiala",
+        "Dwarka Sector 2-6 X-ing",
+        "Palam Village / Mangla Puri",
+        "Mangla Puri",
+        "Palam Colony",
+        "Prahladpur",
+        "Palam Airport",
+        "APS Colony",
+        "S.M. Temple",
+        "I.I.T. Hostel",
+        "I.I.T. Gate",
+        "Panchsheel Club",
+        "Swami Nagar",
+        "O.S. Communication",
+        "Nehru Place Terminal"
+      ],
+      "string":"Nitish"
+    },
+    {
+      "bus_number":"43",
+      "stops":[
+        "Najaf Garh",
+        "Nangli Sakrawati",
+        "Kakrola Bridge",
+        "Netaji Subhash Institute Of Technology",
+        "DPS Matiala",
+        "Dwarka Sector 2-6 X-ing",
+        "Palam Village / Mangla Puri",
+        "Mangla Puri",
+        "Palam Colony",
+        "Prahladpur",
+        "Palam Airport",
+        "APS Colony",
+        "S.M. Temple",
+        "I.I.T. Hostel",
+        "I.I.T. Gate",
+        "Panchsheel Club",
+        "Swami Nagar",
+        "O.S. Communication",
+        "Nehru Place Terminal"
+      ],
+      "string":"Nitish"
+    },
+    {
+      "bus_number":"25",
+      "stops":[
+        "Dhaula Kuan",
+        "RLA College",
+        "Satya Niketan",
+        "Nanak Pura",
+        "South Moti Bagh",
+        "Shanti Niketan",
+        "Swami Malai Mandir",
+        "Munirka Family Planning",
+        "DDA Flat Munirka",
+        "ISTM",
+        "IIT Hostel",
+        "Jia Sarai",
+        "IIT Gate",
+        "Padmini Enclave",
+        "Hauz Khas",
+        "Green Park",
+        "Yusuf Sarai",
+        "Safdarjang Hospital",
+        "South Extention",
+        "Kotla",
+        "Andrews Ganj",
+        "Gupta Market",
+        "Lajpat Nagar",
+        "Sriniwaspuri",
+        "Nehru Nagar",
+        "Ashram",
+        "Taimur Nagar",
+        "Bharat Nagar Crossing",
+
+      ],
+      "string":"Nitish"
+    },
+    {
+      "bus_number":"49",
       "stops":[
         "Dhaula Kuan",
         "RLA College",
@@ -85,10 +187,10 @@
         "Okhla Extension",
         "Abdul Fazal Extention"
       ],
-      "string":"Hello World"
+      "string":"Nitish"
     },
     {
-      "bus_number":"519",
+      "bus_number":"767",
       "stops":[
         "Mandi Village",
         "Jl Bal Bhawan",
@@ -120,10 +222,10 @@
         "Dilli Haat",
         "Safdarjung Terminal"
       ],
-      "string":"Hello World"
+      "string":"Nitish"
     },
     {
-      "bus_number":"605",
+      "bus_number":"440",
       "stops":[
         "Mori Gate",
         "Nityanand Marg",
@@ -174,7 +276,7 @@
         "Vasant Kunj C-8",
         "Vasant Kunj C9"
       ],
-      "string":"Hello World"
+      "string":"Nitish"
     }
   ]
 }
