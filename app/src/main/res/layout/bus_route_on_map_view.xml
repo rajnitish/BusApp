@@ -10,7 +10,7 @@
         android:id="@+id/bus_route_map"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        tools:context=".BusRouteOnMapActivity"/>
+        tools:context=".Activity_RouteMap"/>
 
     <RelativeLayout
         android:layout_below="@id/bus_route_map"

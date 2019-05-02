@@ -5,7 +5,7 @@ import android.app.Application;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class BusApplication extends Application {
+public class MainApplication extends Application {
     public static int ROUTE_MINOR_DETAILS = 1;
     public static int ROUTE_PATH_DETAILS = 2;
     public static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;

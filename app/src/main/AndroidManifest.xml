@@ -11,17 +11,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.nitish.busapp.BusApplication"
+        android:name="com.nitish.busapp.MainApplication"
         android:allowBackup="true"
         android:icon="@drawable/images"
         android:label="@string/app_name"
         android:roundIcon="@drawable/images"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:versionCode="2"
-        android:versionName= "1.1">
+        android:versionCode="3"
+        android:versionName= "1.2">
 
-        <activity android:name=".BusRouteActivity"></activity>
+        <activity android:name=".Activity_Route"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -32,9 +32,9 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCSrpzMTna9S8hI-gmHVwlxvqC8QnPFPZY" /> <!-- Activities -->
+            android:value="ENTER YOUR GOOGLE API KEY " /> <!-- Activities -->
         <activity
-            android:name=".MapsActivity"
+            android:name=".Activity_Maps"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,12 +42,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ComplaintActivity" />
-        <activity android:name=".BusDetailsActivity" />
-        <activity android:name=".MultipleRouteActivity"/>
-        <activity android:name=".BusRouteOnMapActivity"/>
-        <activity android:name=".AboutUsActivity"/>
-        <activity android:name=".ExitActivity"/>
+        <activity android:name=".Activity_Complaint" />
+        <activity android:name=".Activity_Detail" />
+        <activity android:name=".Activity_RouteMultiple"/>
+        <activity android:name=".Activity_RouteMap"/>
+        <activity android:name=".Activity_Aboutus"/>
+        <activity android:name=".Activity_Exit"/>
     </application>
 
 

@@ -34,7 +34,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class MultipleRouteActivity extends AppCompatActivity implements
+
+public class Activity_RouteMultiple extends AppCompatActivity implements
         TaskLoadedCallback {
 
     private static final int AUTOCOMPLETE_REQUEST_CODE_FROM_LOCATION = 1;
@@ -71,8 +72,8 @@ public class MultipleRouteActivity extends AppCompatActivity implements
 
 
         // Fill initial locations
-        fromLocationTextbox.setText(((BusApplication)this.getApplication()).getStartingLocationName());
-        toLocationTextbox.setText(((BusApplication)this.getApplication()).getFinalLocationName());
+        fromLocationTextbox.setText(((MainApplication)this.getApplication()).getStartingLocationName());
+        toLocationTextbox.setText(((MainApplication)this.getApplication()).getFinalLocationName());
 
         // Set the fields to specify which types of place data to return
         final List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
@@ -85,7 +86,7 @@ public class MultipleRouteActivity extends AppCompatActivity implements
                                 new LatLng(28.442, 76.72),
                                 new LatLng(28.858, 77.414)
                         ))
-                        .build(MultipleRouteActivity.this);
+                        .build(Activity_RouteMultiple.this);
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE_FROM_LOCATION);
             }
         });
@@ -98,7 +99,7 @@ public class MultipleRouteActivity extends AppCompatActivity implements
                                 new LatLng(28.442, 76.72),
                                 new LatLng(28.858, 77.414)
                         ))
-                        .build(MultipleRouteActivity.this);
+                        .build(Activity_RouteMultiple.this);
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE_TO_LOCATION);
             }
         });
@@ -106,7 +107,7 @@ public class MultipleRouteActivity extends AppCompatActivity implements
         multipleRouteListview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MultipleRouteActivity.this, BusRouteOnMapActivity.class);
+                Intent intent = new Intent(Activity_RouteMultiple.this, Activity_RouteMap.class);
                 intent.putExtra("bus_route",ROUTE_DETAIL.get(position));
                 startActivity(intent);
             }
@@ -120,8 +121,8 @@ public class MultipleRouteActivity extends AppCompatActivity implements
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
                 // Set global variables
-                ((BusApplication) this.getApplication()).setStartingLocationName(place.getName());
-                ((BusApplication) this.getApplication()).setStartingLocation(place.getLatLng());
+                ((MainApplication) this.getApplication()).setStartingLocationName(place.getName());
+                ((MainApplication) this.getApplication()).setStartingLocation(place.getLatLng());
 
                 // Set starting location name
                 fromLocationTextbox.setText(place.getName());
@@ -135,8 +136,8 @@ public class MultipleRouteActivity extends AppCompatActivity implements
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
                 // Set global variables
-                ((BusApplication) this.getApplication()).setFinalLocationName(place.getName());
-                ((BusApplication) this.getApplication()).setFinalLocation(place.getLatLng());
+                ((MainApplication) this.getApplication()).setFinalLocationName(place.getName());
+                ((MainApplication) this.getApplication()).setFinalLocation(place.getLatLng());
 
                 // Set final location name
                 toLocationTextbox.setText(place.getName());
@@ -152,9 +153,9 @@ public class MultipleRouteActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        LatLng startingLocation = ((BusApplication)this.getApplication()).getStartingLocation();
-        LatLng finalLocation = ((BusApplication)this.getApplication()).getFinalLocation();
-        new FetchURL(MultipleRouteActivity.this, BusApplication.ROUTE_MINOR_DETAILS).execute(getUrl(startingLocation, finalLocation, "transit"));
+        LatLng startingLocation = ((MainApplication)this.getApplication()).getStartingLocation();
+        LatLng finalLocation = ((MainApplication)this.getApplication()).getFinalLocation();
+        new URLcustom(Activity_RouteMultiple.this, MainApplication.ROUTE_MINOR_DETAILS).execute(getUrl(startingLocation, finalLocation, "transit"));
     }
 
     // Makes the URL required to be sent to google places api
@@ -165,7 +166,7 @@ public class MultipleRouteActivity extends AppCompatActivity implements
         String transit_mode = "transit_mode=bus";
         String parameters = str_origin + "&" + str_dest + "&" + mode + "&" + transit_mode + "&alternatives=true";
         String output = "json";
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=AIzaSyCSrpzMTna9S8hI-gmHVwlxvqC8QnPFPZY";
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=ENTER YOUR GOOGLE API KEY ";
         return url;
     }
 
@@ -180,41 +181,17 @@ public class MultipleRouteActivity extends AppCompatActivity implements
             ROUTE_DETAIL.clear();
         }
 
-        if(FARE == null) {
-            FARE = new ArrayList<>();
-        } else {
-            FARE.clear();
-        }
+        if(FARE == null) {       FARE = new ArrayList<>();         } else {         FARE.clear();        }
 
-        if(DISTANCE == null) {
-            DISTANCE = new ArrayList<>();
-        } else {
-            DISTANCE.clear();
-        }
+        if(DISTANCE == null) {   DISTANCE = new ArrayList<>();     } else {         DISTANCE.clear();    }
 
-        if(DURATION == null) {
-            DURATION = new ArrayList<>();
-        } else {
-            DURATION.clear();
-        }
+        if(DURATION == null) {   DURATION = new ArrayList<>();     } else {         DURATION.clear();    }
 
-        if(ARRIVAL_TIME == null) {
-            ARRIVAL_TIME = new ArrayList<>();
-        } else {
-            ARRIVAL_TIME.clear();
-        }
+        if(ARRIVAL_TIME == null) {     ARRIVAL_TIME = new ArrayList<>();       } else {         ARRIVAL_TIME.clear();       }
 
-        if(DEPARTURE_TIME == null) {
-            DEPARTURE_TIME = new ArrayList<>();
-        } else {
-            DEPARTURE_TIME.clear();
-        }
+        if(DEPARTURE_TIME == null) {   DEPARTURE_TIME = new ArrayList<>();     } else {         DEPARTURE_TIME.clear();     }
 
-        if(PATH == null) {
-            PATH = new ArrayList<>();
-        } else {
-            PATH.clear();
-        }
+        if(PATH == null) {             PATH = new ArrayList<>();               } else {         PATH.clear();               }
 
         for(int i=0; i < routes.size(); i++) {
             ROUTE_DETAIL.add(routes.get(i).get("route_detail"));
@@ -304,4 +281,3 @@ public class MultipleRouteActivity extends AppCompatActivity implements
     }
 
 }
-

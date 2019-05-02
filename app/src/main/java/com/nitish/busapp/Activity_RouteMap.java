@@ -46,7 +46,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BusRouteOnMapActivity extends AppCompatActivity implements
+public class Activity_RouteMap extends AppCompatActivity implements
         TaskLoadedCallback,
         OnMapReadyCallback {
 
@@ -68,7 +68,7 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
         // Get permissions and initialize map
         getLocationPermission();
 
-        new FetchURL(BusRouteOnMapActivity.this, BusApplication.ROUTE_PATH_DETAILS).execute(json);
+        new URLcustom(Activity_RouteMap.this, MainApplication.ROUTE_PATH_DETAILS).execute(json);
         populateContent(json);
     }
 
@@ -122,16 +122,16 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
 
     // Gets the required permissions
     private void getLocationPermission() {
-        String[] permissions = {BusApplication.FINE_LOCATION, BusApplication.COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(this, BusApplication.FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this, BusApplication.COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        String[] permissions = {MainApplication.FINE_LOCATION, MainApplication.COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(this, MainApplication.FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, MainApplication.COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionGranted = true;
                 initMap();
             } else {
-                ActivityCompat.requestPermissions(this, permissions, BusApplication.LOCATION_PERMISSION_REQUEST_CODE);
+                ActivityCompat.requestPermissions(this, permissions, MainApplication.LOCATION_PERMISSION_REQUEST_CODE);
             }
         } else {
-            ActivityCompat.requestPermissions(this, permissions, BusApplication.LOCATION_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, permissions, MainApplication.LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -140,7 +140,7 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch (requestCode) {
-            case BusApplication.LOCATION_PERMISSION_REQUEST_CODE: {
+            case MainApplication.LOCATION_PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < grantResults.length; i++) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
@@ -185,7 +185,7 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    Intent intent = new Intent(BusRouteOnMapActivity.this, BusDetailsActivity.class);
+                    Intent intent = new Intent(Activity_RouteMap.this, Activity_Detail.class);
                     intent.putExtra("bus_id", marker.getTitle());
                     startActivity(intent);
                 }
@@ -199,7 +199,7 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
         // Set location updates
         final LocationRequest locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_NO_POWER);
-        locationRequest.setInterval(BusApplication.LOCATION_UPDATE_INTERVAL);
+        locationRequest.setInterval(MainApplication.LOCATION_UPDATE_INTERVAL);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -226,14 +226,14 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
                             currentLocation = (Location) task.getResult();
 
                             // Set current location as starting location
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), BusApplication.DEFAULT_ZOOM);
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), MainApplication.DEFAULT_ZOOM);
 
                             // Setup nearby bus markers
                             setBusMarkers();
 
                         } else {
                             // Task unsuccessful
-                            Toast.makeText(BusRouteOnMapActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Activity_RouteMap.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -245,7 +245,7 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
     // Set nearby bus markers on map
     void setBusMarkers() {
         String query_url = "https://busappgp16.000webhostapp.com/retrieve.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
-        new FetchSQLQuery(BusRouteOnMapActivity.this, new FetchSQLQuery.AsyncResponse() {
+        new SQLcustom(Activity_RouteMap.this, new SQLcustom.AsyncResponse() {
             @Override
             public void processFinish(String output) {
                 // Parse JSON string and show markers (do this is an async task preferably)
@@ -290,8 +290,8 @@ public class BusRouteOnMapActivity extends AppCompatActivity implements
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
         // Add starting and final location markers
-        LatLng startingLocation = ((BusApplication) this.getApplication()).getStartingLocation();
-        LatLng finalLocation = ((BusApplication) this.getApplication()).getFinalLocation();
+        LatLng startingLocation = ((MainApplication) this.getApplication()).getStartingLocation();
+        LatLng finalLocation = ((MainApplication) this.getApplication()).getFinalLocation();
         mMap.addMarker(new MarkerOptions().position(startingLocation));
         mMap.addMarker(new MarkerOptions().position(finalLocation));
 

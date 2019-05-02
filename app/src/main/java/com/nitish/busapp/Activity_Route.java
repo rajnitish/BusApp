@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public class BusRouteActivity extends AppCompatActivity {
+public class Activity_Route extends AppCompatActivity {
 
     public String loadJSONFromAsset(Context context) {
         String json = null;
@@ -78,7 +78,7 @@ public class BusRouteActivity extends AppCompatActivity {
                                 bus_stop_arr[j] = arrstops.getString(j);
                             }
 
-                            ArrayAdapter<String> adapterx = new ArrayAdapter<String>(BusRouteActivity.this, android.R.layout.simple_list_item_1 , bus_stop_arr );
+                            ArrayAdapter<String> adapterx = new ArrayAdapter<String>(Activity_Route.this, android.R.layout.simple_list_item_1 , bus_stop_arr );
                             // Prints Pretty, Cool, Weird
 
                             listView.setAdapter(adapterx);
@@ -92,3 +92,4 @@ public class BusRouteActivity extends AppCompatActivity {
         });
     }
 }
+

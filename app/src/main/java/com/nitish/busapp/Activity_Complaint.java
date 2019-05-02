@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class ComplaintActivity extends Activity {
+public class Activity_Complaint extends Activity {
     private EditText mEditTextSubject;
     private EditText mNameText,mEmailText,mPhoneText,mFeedbackText;
     ProgressDialog progressDialog;
@@ -48,7 +48,7 @@ public class ComplaintActivity extends Activity {
 
         if(mNameText.getText().toString().isEmpty() || mEmailText.getText().toString().isEmpty() || mPhoneText.getText().toString().isEmpty() || mFeedbackText.getText().toString().isEmpty())
         {
-            progressDialog = new ProgressDialog(ComplaintActivity.this);
+            progressDialog = new ProgressDialog(Activity_Complaint.this);
             progressDialog.setMessage("Please fill all details ");
             progressDialog.setCancelable(true);
             progressDialog.show();
@@ -66,7 +66,7 @@ public class ComplaintActivity extends Activity {
             startActivity(intent);
            // startActivity(Intent.createChooser(intent, " Choose your email Client"));
 
-            progressDialog = new ProgressDialog(ComplaintActivity.this);
+            progressDialog = new ProgressDialog(Activity_Complaint.this);
             progressDialog.setMessage("Thanks User for Feedback !!! ");
             progressDialog.setCancelable(true);
             progressDialog.show();

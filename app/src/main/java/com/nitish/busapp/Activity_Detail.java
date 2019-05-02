@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BusDetailsActivity extends Activity {
+public class Activity_Detail extends Activity {
     TextView busNumberTextview, driverNameTextview, busColorTextview, busCapacityTextview;
 
     @Override
@@ -26,7 +26,7 @@ public class BusDetailsActivity extends Activity {
 
 
         String query_url = "https://busappgp16.000webhostapp.com/retrieve.php?case=2&ID=" + bus_id;
-        new FetchSQLQuery(BusDetailsActivity.this, new FetchSQLQuery.AsyncResponse() {
+        new SQLcustom(Activity_Detail.this, new SQLcustom.AsyncResponse() {
             @Override
             public void processFinish(String output) {
                 // Parse JSON string and fill information

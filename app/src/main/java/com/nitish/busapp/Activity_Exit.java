@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.widget.ImageView;
 
-public class ExitActivity extends Activity {
+public class Activity_Exit extends Activity {
 
     ImageView image;
 

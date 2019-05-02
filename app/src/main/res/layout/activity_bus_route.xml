@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BusRouteActivity">
+    tools:context=".Activity_Route">
     <ListView
         android:id="@+id/contentView"
         android:layout_width="match_parent"

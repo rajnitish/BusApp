@@ -9,7 +9,7 @@ import android.text.Spanned;
 import android.widget.TextView;
 
 
-public class AboutUsActivity extends Activity {
+public class Activity_Aboutus extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -63,7 +64,7 @@ import java.util.Locale;
 
 import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
-public class MapsActivity extends AppCompatActivity implements
+public class Activity_Maps extends AppCompatActivity implements
         OnMapReadyCallback,
         OnConnectionFailedListener {
 
@@ -93,6 +94,8 @@ public class MapsActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d("NITISH"," NNNNNNNNNNN.....");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
@@ -112,16 +115,16 @@ public class MapsActivity extends AppCompatActivity implements
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.bus_route:
-                        startActivity(new Intent(MapsActivity.this, BusRouteActivity.class));
+                        startActivity(new Intent(Activity_Maps.this, Activity_Route.class));
                         break;
                     case R.id.complaint_section:
-                        startActivity(new Intent(MapsActivity.this, ComplaintActivity.class));
+                        startActivity(new Intent(Activity_Maps.this, Activity_Complaint.class));
                         break;
                     case R.id.about_us:
-                        startActivity(new Intent(MapsActivity.this, AboutUsActivity.class));
+                        startActivity(new Intent(Activity_Maps.this, Activity_Aboutus.class));
                         break;
                     case R.id.exit_section:
-                        startActivity(new Intent(MapsActivity.this, ExitActivity.class));
+                        startActivity(new Intent(Activity_Maps.this, Activity_Exit.class));
                         finish();
                         break;
                 }
@@ -133,7 +136,7 @@ public class MapsActivity extends AppCompatActivity implements
         getLocationPermission();
 
         // Initialize Places
-        Places.initialize(getApplicationContext(), "AIzaSyCSrpzMTna9S8hI-gmHVwlxvqC8QnPFPZY");
+        Places.initialize(getApplicationContext(), "ENTER YOUR GOOGLE API KEY ");
 
         // Set the fields to specify which types of place data to return
         final List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
@@ -146,7 +149,7 @@ public class MapsActivity extends AppCompatActivity implements
                                 new LatLng(28.442, 76.72),
                                 new LatLng(28.858, 77.414)
                         ))
-                        .build(MapsActivity.this);
+                        .build(Activity_Maps.this);
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE_STARTING_LOCATION);
             }
         });
@@ -159,7 +162,7 @@ public class MapsActivity extends AppCompatActivity implements
                                 new LatLng(28.442, 76.72),
                                 new LatLng(28.858, 77.414)
                         ))
-                        .build(MapsActivity.this);
+                        .build(Activity_Maps.this);
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE_FINAL_LOCATION);
             }
         });
@@ -179,8 +182,8 @@ public class MapsActivity extends AppCompatActivity implements
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
                 // Set global variables
-                ((BusApplication) this.getApplication()).setStartingLocationName(place.getName());
-                ((BusApplication) this.getApplication()).setStartingLocation(place.getLatLng());
+                ((MainApplication) this.getApplication()).setStartingLocationName(place.getName());
+                ((MainApplication) this.getApplication()).setStartingLocation(place.getLatLng());
 
                 // Set starting location name
                 mStartingLocationTextbox.setText(place.getName());
@@ -204,8 +207,8 @@ public class MapsActivity extends AppCompatActivity implements
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
                 // Set global variables
-                ((BusApplication) this.getApplication()).setFinalLocationName(place.getName());
-                ((BusApplication) this.getApplication()).setFinalLocation(place.getLatLng());
+                ((MainApplication) this.getApplication()).setFinalLocationName(place.getName());
+                ((MainApplication) this.getApplication()).setFinalLocation(place.getLatLng());
 
                 // Set final location name
                 mFinalLocationTextbox.setText(place.getName());
@@ -226,27 +229,27 @@ public class MapsActivity extends AppCompatActivity implements
             }
         } else if (requestCode == MULTIPLE_ROUTE_ACTIVITY) {
             // Set text in textboxes
-            mStartingLocationTextbox.setText(((BusApplication) this.getApplication()).getStartingLocationName());
-            mFinalLocationTextbox.setText(((BusApplication) this.getApplication()).getFinalLocationName());
+            mStartingLocationTextbox.setText(((MainApplication) this.getApplication()).getStartingLocationName());
+            mFinalLocationTextbox.setText(((MainApplication) this.getApplication()).getFinalLocationName());
 
             // Set markers
-            startingLocationMarker.setPosition(((BusApplication) this.getApplication()).getStartingLocation());
-            finalLocationMarker.setPosition(((BusApplication) this.getApplication()).getFinalLocation());
+            startingLocationMarker.setPosition(((MainApplication) this.getApplication()).getStartingLocation());
+            finalLocationMarker.setPosition(((MainApplication) this.getApplication()).getFinalLocation());
         }
     }
 
     // Gets the required permissions
     private void getLocationPermission() {
-        String[] permissions = {BusApplication.FINE_LOCATION, BusApplication.COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(this, BusApplication.FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this, BusApplication.COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        String[] permissions = {MainApplication.FINE_LOCATION, MainApplication.COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(this, MainApplication.FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, MainApplication.COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionGranted = true;
                 initMap();
             } else {
-                ActivityCompat.requestPermissions(this, permissions, BusApplication.LOCATION_PERMISSION_REQUEST_CODE);
+                ActivityCompat.requestPermissions(this, permissions, MainApplication.LOCATION_PERMISSION_REQUEST_CODE);
             }
         } else {
-            ActivityCompat.requestPermissions(this, permissions, BusApplication.LOCATION_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, permissions, MainApplication.LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -255,7 +258,7 @@ public class MapsActivity extends AppCompatActivity implements
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch (requestCode) {
-            case BusApplication.LOCATION_PERMISSION_REQUEST_CODE: {
+            case MainApplication.LOCATION_PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < grantResults.length; i++) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
@@ -280,6 +283,7 @@ public class MapsActivity extends AppCompatActivity implements
     // This is executed once the map is initialized and is ready
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d("NITISH"," NNNNNNNNNNN.....");
         mMap = googleMap;
         if (mLocationPermissionGranted) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -292,17 +296,6 @@ public class MapsActivity extends AppCompatActivity implements
             setLocationUpdates();
 
 
-
-            if(currentLocation != null)
-            {
-                origin = new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude());
-
-            }
-            Circle circle = mMap.addCircle(new CircleOptions()
-                    .center(origin)
-                    .radius(5000)
-                    .strokeColor(Color.RED)
-                    .fillColor(getColorWithAlpha(Color.CYAN, 0.2f)));
 
 
 
@@ -318,7 +311,7 @@ public class MapsActivity extends AppCompatActivity implements
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    Intent intent = new Intent(MapsActivity.this, BusDetailsActivity.class);
+                    Intent intent = new Intent(Activity_Maps.this, Activity_Detail.class);
                     intent.putExtra("bus_id", marker.getTitle());
                     startActivity(intent);
                 }
@@ -347,14 +340,14 @@ public class MapsActivity extends AppCompatActivity implements
         mStartingLocationTextbox.setText(currentLocationName);
 
         // Set global variables
-        ((BusApplication)this.getApplication()).setStartingLocation(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
-        ((BusApplication)this.getApplication()).setStartingLocationName(currentLocationName);
+        ((MainApplication)this.getApplication()).setStartingLocation(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+        ((MainApplication)this.getApplication()).setStartingLocationName(currentLocationName);
     }
 
     // Set nearby bus markers on map
     void setBusMarkers() {
         String query_url = "https://busappgp16.000webhostapp.com/retrieve.php?case=1&lat=" + currentLocation.getLatitude() + "&lng=" + currentLocation.getLongitude();
-        new FetchSQLQuery(MapsActivity.this, new FetchSQLQuery.AsyncResponse() {
+        new SQLcustom(Activity_Maps.this, new SQLcustom.AsyncResponse() {
             @Override
             public void processFinish(String output) {
                 // Parse JSON string and show markers (do this is an async task preferably)
@@ -388,7 +381,7 @@ public class MapsActivity extends AppCompatActivity implements
         // Set location updates
         final LocationRequest locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_NO_POWER);
-        locationRequest.setInterval(BusApplication.LOCATION_UPDATE_INTERVAL);
+        locationRequest.setInterval(MainApplication.LOCATION_UPDATE_INTERVAL);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -437,7 +430,7 @@ public class MapsActivity extends AppCompatActivity implements
 
                         } else {
                             // Task unsuccessful
-                            Toast.makeText(MapsActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Activity_Maps.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -450,12 +443,29 @@ public class MapsActivity extends AppCompatActivity implements
        CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
        mMap.animateCamera(cu);
 
+        Log.d("NITISH"," BOLO.....");
+
+        if(currentLocation != null)
+        {
+            setLocationUpdates();
+            Log.d("NITISH"," HELLO.....");
+            origin = new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude());
+
+
+        }
+        Circle circle = mMap.addCircle(new CircleOptions()
+                .center(origin)
+                .radius(5000)
+                .strokeColor(Color.RED)
+                .fillColor(getColorWithAlpha(Color.CYAN, 0.2f)));
+
+
         hideSoftKeyboard();
     }
 
     private void showRoutes() {
         if(startingLocationMarker != null && finalLocationMarker != null) {
-            startActivityForResult(new Intent(this, MultipleRouteActivity.class), MULTIPLE_ROUTE_ACTIVITY);
+            startActivityForResult(new Intent(this, Activity_RouteMultiple.class), MULTIPLE_ROUTE_ACTIVITY);
         }
     }
 
@@ -467,32 +477,4 @@ public class MapsActivity extends AppCompatActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
-//    // This method is executed once the places api is finished. It places the route on the map
-//    @Override
-//    public void onTaskDone(Object... values) {
-//        if(currentPolylines != null && currentPolylines.size() > 0) {
-//            for(int i = 0; i < currentPolylines.size(); i++) {
-//                currentPolylines.get(i).remove();
-//            }
-//        }
-//
-//        currentPolylines = new ArrayList<>();
-//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//
-//        ArrayList<PolylineOptions> arr = (ArrayList<PolylineOptions>) values[0];
-//        for(int i = 0; i < arr.size(); i++) {
-//            Polyline p = mMap.addPolyline(arr.get(i));
-//            currentPolylines.add(p);
-//            List<LatLng> l = arr.get(i).getPoints();
-//            for(int j = 0; j < l.size(); j++) {
-//                builder.include(l.get(j));
-//            }
-//        }
-//
-//        // zoom out map
-//        int padding = 100;
-//        LatLngBounds bounds = builder.build();
-//        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-//        mMap.animateCamera(cu);
-//    }
 }
